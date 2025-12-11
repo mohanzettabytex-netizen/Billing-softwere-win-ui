@@ -18,7 +18,7 @@ namespace App3.Views
             // Setup demo dashboard cards
             Cards.Add(new DashboardCard { Title = "Total Sales", Value = "₹12000", Status = "Active" });
             Cards.Add(new DashboardCard { Title = "Customers", Value = "25", Status = "Active" });
-            Cards.Add(new DashboardCard { Title = "Items", Value = "50", Status = "Active" });
+            Cards.Add(new DashboardCard { Title = "Items", Value = "100", Status = "Active" });
             Cards.Add(new DashboardCard { Title = "New Orders", Value = "5", Status = "Active" });
 
             DashboardCards.ItemsSource = Cards;
