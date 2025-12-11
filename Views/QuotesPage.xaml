@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="App_3.Views.QuotesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App_3.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Padding="20" Spacing="15">
+
+        <!-- Title -->
+        <TextBlock Text="Quotes" FontSize="32" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <!-- Add/Edit Section -->
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBox x:Name="NameBox" PlaceholderText="Quote Name" Width="150"/>
+            <TextBox x:Name="CustomerBox" PlaceholderText="Customer" Width="150"/>
+            <TextBox x:Name="AmountBox" PlaceholderText="Amount" Width="100"/>
+            <ComboBox x:Name="StatusBox" Width="100">
+                <ComboBoxItem Content="Pending"/>
+                <ComboBoxItem Content="Approved"/>
+                <ComboBoxItem Content="Rejected"/>
+            </ComboBox>
+            <Button Content="Add/Update" Click="AddOrUpdate_Click"/>
+        </StackPanel>
+
+        <!-- Search/Filter Section -->
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBox x:Name="SearchBox" PlaceholderText="Search..." Width="200" TextChanged="SearchBox_TextChanged"/>
+        </StackPanel>
+
+        <!-- Quotes List -->
+        <ListView x:Name="QuotesListView" SelectionMode="Single">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:Quote">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="{x:Bind Id}" Width="50"/>
+                        <TextBlock Text="{x:Bind Name}" Width="150"/>
+                        <TextBlock Text="{x:Bind Customer}" Width="150"/>
+                        <TextBlock Text="{x:Bind Amount}" Width="100"/>
+                        <TextBlock Text="{x:Bind Status}" Width="100"/>
+                        <Button Content="Edit" Click="EditQuote_Click" Tag="{x:Bind}"/>
+                        <Button Content="Delete" Click="DeleteQuote_Click" Tag="{x:Bind}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </StackPanel>
+</Page>
+

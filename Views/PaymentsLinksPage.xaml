@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="App_3.Views.PaymentsLinksPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App_3.Views"
+    xmlns:models="using:App_3.Models"
+    xmlns:conv="using:App_3.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <conv:StatusToColorConverter x:Key="StatusToColor"/>
+    </Page.Resources>
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Input Section -->
+        <StackPanel Grid.Row="0" Orientation="Vertical" Spacing="10">
+            <TextBlock Text="Payment Links" FontSize="32" FontWeight="Bold" Margin="0,0,0,20"/>
+            
+            <TextBox x:Name="NameInput" PlaceholderText="Enter Name" HorizontalAlignment="Stretch"/>
+            <TextBox x:Name="LinkInput" PlaceholderText="Enter Payment Link" HorizontalAlignment="Stretch"/>
+            <ComboBox x:Name="StatusCombo" SelectedIndex="0" HorizontalAlignment="Left" Width="150">
+                <ComboBoxItem Content="Active"/>
+                <ComboBoxItem Content="Inactive"/>
+                <ComboBoxItem Content="Expired"/>
+            </ComboBox>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Spacing="10">
+                <Button Content="Add" Click="AddLink_Click" Width="100"/>
+                <Button Content="Update" Click="UpdateLink_Click" Width="100"/>
+                <Button Content="Delete" Click="DeleteLink_Click" Width="100"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Search -->
+        <TextBox x:Name="SearchBox" PlaceholderText="Search Links..." Grid.Row="1" Margin="0,20,0,10"
+                 TextChanged="SearchBox_TextChanged"/>
+
+        <!-- Links List -->
+        <ScrollViewer Grid.Row="2">
+            <ListView x:Name="PaymentList" ItemsSource="{x:Bind FilteredLinks, Mode=OneWay}" SelectionMode="Single">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:PaymentLink">
+                        <Border Padding="10" Margin="5" Background="{x:Bind Status, Converter={StaticResource StatusToColor}}" CornerRadius="5">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{x:Bind Name}" FontWeight="Bold" FontSize="16"/>
+                                <TextBlock Text="{x:Bind Link}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                <TextBlock Text="{x:Bind Status}" FontStyle="Italic" Margin="0,2,0,0"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="5" Margin="0,5,0,0">
+                                    <Button Content="Copy" Click="CopyLink_Click" Tag="{x:Bind}"/>
+                                    <Button Content="Edit" Click="EditLink_Click" Tag="{x:Bind}"/>
+                                    <Button Content="Delete" Click="DeleteLink_Click" Tag="{x:Bind}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+    </Grid>
+</Page>
+
+
+
