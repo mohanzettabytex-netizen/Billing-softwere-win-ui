@@ -52,7 +52,6 @@
   <ItemGroup>
     <Page Update="Views\QuotesPage.xaml"><Generator>MSBuild:Compile</Generator></Page>
     <Page Update="Views\HomePage.xaml"><Generator>MSBuild:Compile</Generator></Page>
-    <Page Update="Views\ItemsManagementPage.xaml"><Generator>MSBuild:Compile</Generator></Page>
     <Page Update="Views\RecurringInvoicesPage.xaml"><Generator>MSBuild:Compile</Generator></Page>
     <Page Update="Views\PaymentReceivedPage.xaml"><Generator>MSBuild:Compile</Generator></Page>
     <Page Update="Views\PaymentsLinksPage.xaml"><Generator>MSBuild:Compile</Generator></Page>

@@ -1,5 +1,4 @@
 using App_3.Views;
-using App3.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -8,12 +7,23 @@ namespace App_3
 {
     public sealed partial class MainWindow : Window
     {
+        // Singleton instances for pages that need state retention
+        private ItemsPage itemsPageInstance;
+        private HomePage homePageInstance;
+        private PartiesPage partiesPageInstance;
+        private QuotesPage quotesPageInstance;
+        private InvoicePage invoicePageInstance;
+        private PaymentsLinksPage paymentLinksPageInstance;
+        private PaymentReceivedPage paymentsReceivedPageInstance;
+        private RecurringInvoicesPage recurringInvoicesPageInstance;
+
         public MainWindow()
         {
             this.InitializeComponent();
 
-            // Default page: HomePage
-            ContentFrame.Navigate(typeof(HomePage));
+            // Initialize default page
+            homePageInstance = new HomePage();
+            ContentFrame.Navigate(homePageInstance.GetType());
 
             // NavView selection changed
             NavView.SelectionChanged += NavView_SelectionChanged;
@@ -24,40 +34,55 @@ namespace App_3
             if (args.SelectedItemContainer is NavigationViewItem selectedItem)
             {
                 string tag = selectedItem.Tag?.ToString();
-                Type pageType = null;
+                object pageInstance = null;
 
                 switch (tag)
                 {
                     case "Home":
-                        pageType = typeof(HomePage);
+                        if (homePageInstance == null) homePageInstance = new HomePage();
+                        pageInstance = homePageInstance;
                         break;
+
                     case "Parties":
-                        pageType = typeof(PartiesPage);
+                        if (partiesPageInstance == null) partiesPageInstance = new PartiesPage();
+                        pageInstance = partiesPageInstance;
                         break;
-                    case "ItemsManagement":
-                        pageType = typeof(ItemsManagementPage);
+
+                    case "Items":
+                        if (itemsPageInstance == null) itemsPageInstance = new ItemsPage();
+                        pageInstance = itemsPageInstance;
                         break;
+
                     case "Quotes":
-                        pageType = typeof(QuotesPage);
+                        if (quotesPageInstance == null) quotesPageInstance = new QuotesPage();
+                        pageInstance = quotesPageInstance;
                         break;
+
                     case "Invoice":
-                        pageType = typeof(InvoicePage);
+                        if (invoicePageInstance == null) invoicePageInstance = new InvoicePage();
+                        pageInstance = invoicePageInstance;
                         break;
+
                     case "PaymentLinks":
-                        pageType = typeof(PaymentsLinksPage);
+                        if (paymentLinksPageInstance == null) paymentLinksPageInstance = new PaymentsLinksPage();
+                        pageInstance = paymentLinksPageInstance;
                         break;
+
                     case "PaymentsReceived":
-                        pageType = typeof(PaymentReceivedPage);
+                        if (paymentsReceivedPageInstance == null) paymentsReceivedPageInstance = new PaymentReceivedPage();
+                        pageInstance = paymentsReceivedPageInstance;
                         break;
+
                     case "RecurringInvoices":
-                        pageType = typeof(RecurringInvoicesPage);
+                        if (recurringInvoicesPageInstance == null) recurringInvoicesPageInstance = new RecurringInvoicesPage();
+                        pageInstance = recurringInvoicesPageInstance;
                         break;
                 }
 
-                // Only navigate if it's a different page
-                if (pageType != null && ContentFrame.CurrentSourcePageType != pageType)
+                // Navigate only if a valid instance is selected
+                if (pageInstance != null && ContentFrame.Content != pageInstance)
                 {
-                    ContentFrame.Navigate(pageType);
+                    ContentFrame.Navigate(pageInstance.GetType());
                 }
             }
         }
