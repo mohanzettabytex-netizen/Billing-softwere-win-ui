@@ -29,17 +29,18 @@
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
 
+            <NavigationViewItem Content="Invoices" Tag="Invoice">
+                <NavigationViewItem.Icon>
+                    <SymbolIcon Symbol="Calculator"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
             <NavigationViewItem Content="Quotes" Tag="Quotes">
                 <NavigationViewItem.Icon>
                     <SymbolIcon Symbol="Document"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
 
-            <NavigationViewItem Content="Invoice / Billing" Tag="Invoice">
-                <NavigationViewItem.Icon>
-                    <SymbolIcon Symbol="Calculator"/>
-                </NavigationViewItem.Icon>
-            </NavigationViewItem>
 
             <NavigationViewItem Content="Payment Links" Tag="PaymentLinks">
                 <NavigationViewItem.Icon>

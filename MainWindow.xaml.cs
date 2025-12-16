@@ -11,8 +11,8 @@ namespace App_3
         private ItemsPage itemsPageInstance;
         private HomePage homePageInstance;
         private PartiesPage partiesPageInstance;
-        private QuotesPage quotesPageInstance;
         private InvoicePage invoicePageInstance;
+        private QuotesPage quotesPageInstance;
         private PaymentsLinksPage paymentLinksPageInstance;
         private PaymentReceivedPage paymentsReceivedPageInstance;
         private RecurringInvoicesPage recurringInvoicesPageInstance;
@@ -53,15 +53,16 @@ namespace App_3
                         pageInstance = itemsPageInstance;
                         break;
 
+                    case "Invoice":
+                        if (invoicePageInstance == null) invoicePageInstance = new InvoicePage();
+                        pageInstance = invoicePageInstance;
+                        break;
+
                     case "Quotes":
                         if (quotesPageInstance == null) quotesPageInstance = new QuotesPage();
                         pageInstance = quotesPageInstance;
                         break;
 
-                    case "Invoice":
-                        if (invoicePageInstance == null) invoicePageInstance = new InvoicePage();
-                        pageInstance = invoicePageInstance;
-                        break;
 
                     case "PaymentLinks":
                         if (paymentLinksPageInstance == null) paymentLinksPageInstance = new PaymentsLinksPage();

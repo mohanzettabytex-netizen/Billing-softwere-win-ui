@@ -1,48 +1,88 @@
+﻿using App_3.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System;
 using System.Collections.ObjectModel;
-using App_3.Models;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace App_3.Views
 {
     public sealed partial class InvoicePage : Page
     {
-        public ObservableCollection<Item> Items { get; set; } = new();
+        private ObservableCollection<InvoiceItemModel> InvoiceItems = new();
 
         public InvoicePage()
         {
-            this.InitializeComponent();
-            ItemList.ItemsSource = Items;
+            InitializeComponent();
+
+            InvoiceItemsList.ItemsSource = InvoiceItems;
+
+            InvoiceItems.CollectionChanged += (_, __) => UpdateSummary();
+
+            InvoiceNoBox.Text = $"INV-{DateTime.Now.Ticks.ToString()[^6..]}";
+            InvoiceDatePicker.Date = DateTimeOffset.Now;
+
+            UpdateSummary();
         }
+
 
         private void AddItem_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(ItemNameInput.Text) &&
-                int.TryParse(QuantityInput.Text, out int qty) &&
-                decimal.TryParse(PriceInput.Text, out decimal price))
+            if (ItemSelect.SelectedItem == null) return;
+
+            string name = ItemSelect.SelectedItem.ToString();
+            int qty = QtyBox.Value <= 0 ? 1 : (int)QtyBox.Value;
+            decimal price = (decimal)PriceBox.Value;
+
+            var existingItem = InvoiceItems.FirstOrDefault(i => i.Name == name);
+
+            if (existingItem != null)
             {
-                Items.Add(new Item
+                existingItem.Quantity += qty;
+            }
+            else
+            {
+                InvoiceItems.Add(new InvoiceItemModel
                 {
-                    Name = ItemNameInput.Text,
+                    Name = name,
                     Quantity = qty,
                     Price = price
                 });
+            }
 
-                ItemNameInput.Text = "";
-                QuantityInput.Text = "";
-                PriceInput.Text = "";
+            UpdateSummary();
+            ClearItemInputs();
+        }
 
-                UpdateGrandTotal();
+
+        private void RemoveItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is InvoiceItemModel item)
+            {
+                InvoiceItems.Remove(item);
+                UpdateSummary();
             }
         }
 
-        private void UpdateGrandTotal()
+        private void UpdateSummary()
         {
-            decimal total = 0;
-            foreach (var item in Items)
-                total += item.Total;
+            decimal subTotal = InvoiceItems.Sum(i => i.Total);
+            decimal paid = (decimal)(PaidAmountBox?.Value ?? 0);
+            decimal due = subTotal - paid;
 
-            GrandTotalText.Text = $"Grand Total: {total:C}";
+            SubTotalText.Text = $"₹ {subTotal:F2}";
+            DiscountText.Text = "₹ 0";
+            TaxText.Text = "₹ 0";
+            GrandTotalText.Text = $"₹ {subTotal:F2}";
+        }
+
+
+        private void ClearItemInputs()
+        {
+            ItemSelect.SelectedIndex = -1;
+            QtyBox.Value = 1;
+            PriceBox.Value = 0;
         }
     }
 }
