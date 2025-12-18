@@ -1,110 +1,99 @@
+using App_3.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Windows.ApplicationModel.DataTransfer;
-using App_3.Models;
+using System;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.ComponentModel;
 
 namespace App_3.Views
 {
-    public sealed partial class PaymentsLinksPage : Page
+    public sealed partial class PaymentLinksPage : Page, INotifyPropertyChanged
     {
-        public ObservableCollection<PaymentLink> PaymentLinks { get; set; } = new();
-        public ObservableCollection<PaymentLink> FilteredLinks { get; set; } = new();
+        // Observable collection bound to XAML
+        private ObservableCollection<PaymentLinkModel> _paymentLinks;
+        public ObservableCollection<PaymentLinkModel> PaymentLinks
+        {
+            get => _paymentLinks;
+            set
+            {
+                if (_paymentLinks != value)
+                {
+                    _paymentLinks = value;
+                    OnPropertyChanged(nameof(PaymentLinks));
+                }
+            }
+        }
 
-        public PaymentsLinksPage()
+        // INotifyPropertyChanged implementation
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        public PaymentLinksPage()
         {
             this.InitializeComponent();
-            PaymentList.ItemsSource = FilteredLinks;
-            RefreshFiltered();
+
+            // Initialize the collection
+            PaymentLinks = new ObservableCollection<PaymentLinkModel>();
+
+            // Load dummy data
+            LoadDummyData();
+
+            // Hook up modal buttons
+            BtnCreatePaymentLink.Click += BtnCreatePaymentLink_Click;
+            BtnCancelModal.Click += BtnCancelModal_Click;
         }
 
-        private void AddLink_Click(object sender, RoutedEventArgs e)
+        // Load dummy payment links
+        private void LoadDummyData()
         {
-            if (!string.IsNullOrWhiteSpace(NameInput.Text) && !string.IsNullOrWhiteSpace(LinkInput.Text))
+            PaymentLinks.Clear(); // Keep the same collection instance
+
+            PaymentLinks.Add(new PaymentLinkModel
             {
-                PaymentLinks.Add(new PaymentLink
-                {
-                    Name = NameInput.Text,
-                    Link = LinkInput.Text,
-                    Status = (LinkStatus)StatusCombo.SelectedIndex
-                });
-                RefreshFiltered();
-                ClearInputs();
-            }
-        }
+                CustomerName = "Arun Kumar",
+                Amount = 2500,
+                Status = "Pending",
+                ExpiryDate = DateTime.Now.AddDays(5),
+                PaymentMethod = "UPI"
+            });
 
-        private void EditLink_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is PaymentLink link)
+            PaymentLinks.Add(new PaymentLinkModel
             {
-                NameInput.Text = link.Name;
-                LinkInput.Text = link.Link;
-                StatusCombo.SelectedIndex = (int)link.Status;
-                PaymentList.SelectedItem = link;
-            }
-        }
+                CustomerName = "Priya Sharma",
+                Amount = 1800,
+                Status = "Paid",
+                ExpiryDate = DateTime.Now.AddDays(-1),
+                PaymentMethod = "Card"
+            });
 
-        private void UpdateLink_Click(object sender, RoutedEventArgs e)
-        {
-            if (PaymentList.SelectedItem is PaymentLink selected)
+            PaymentLinks.Add(new PaymentLinkModel
             {
-                selected.Name = NameInput.Text;
-                selected.Link = LinkInput.Text;
-                selected.Status = (LinkStatus)StatusCombo.SelectedIndex;
-                RefreshFiltered();
-                ClearInputs();
-            }
+                CustomerName = "Naveen ",
+                Amount = 1800,
+                Status = "Expired",
+                ExpiryDate = DateTime.Now.AddDays(-10),
+                PaymentMethod = "Bank Transfer"
+            });
+
         }
 
-        private void DeleteLink_Click(object sender, RoutedEventArgs e)
+        // Show the create payment link modal
+        private void BtnCreatePaymentLink_Click(object sender, RoutedEventArgs e)
         {
-            PaymentLink target = null;
-
-            if (sender is Button btn && btn.Tag is PaymentLink link)
-                target = link;
-            else if (PaymentList.SelectedItem is PaymentLink selected)
-                target = selected;
-
-            if (target != null)
-            {
-                PaymentLinks.Remove(target);
-                RefreshFiltered();
-                ClearInputs();
-            }
+            ModalBackground.Visibility = Visibility.Visible;
         }
 
-        private void CopyLink_Click(object sender, RoutedEventArgs e)
+        // Hide the create payment link modal
+        private void BtnCancelModal_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.Tag is PaymentLink link)
-            {
-                var data = new DataPackage();
-                data.SetText(link.Link);
-                Clipboard.SetContent(data);
-            }
+            ModalBackground.Visibility = Visibility.Collapsed;
         }
 
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        // Optional: helper to add new payment link dynamically
+        public void AddPaymentLink(PaymentLinkModel link)
         {
-            RefreshFiltered(SearchBox.Text);
-        }
-
-        private void ClearInputs()
-        {
-            NameInput.Text = "";
-            LinkInput.Text = "";
-            StatusCombo.SelectedIndex = 0;
-            PaymentList.SelectedItem = null;
-        }
-
-        private void RefreshFiltered(string query = "")
-        {
-            FilteredLinks.Clear();
-            foreach (var link in PaymentLinks.Where(x => x.Name.ToLower().Contains(query.ToLower())
-                                                      || x.Link.ToLower().Contains(query.ToLower())))
-            {
-                FilteredLinks.Add(link);
-            }
+            PaymentLinks.Add(link);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace App_3
         private PartiesPage partiesPageInstance;
         private InvoicePage invoicePageInstance;
         private QuotesPage quotesPageInstance;
-        private PaymentsLinksPage paymentLinksPageInstance;
+        private PaymentLinksPage paymentLinksPageInstance;
         private PaymentReceivedPage paymentsReceivedPageInstance;
         private RecurringInvoicesPage recurringInvoicesPageInstance;
 
@@ -65,7 +65,7 @@ namespace App_3
 
 
                     case "PaymentLinks":
-                        if (paymentLinksPageInstance == null) paymentLinksPageInstance = new PaymentsLinksPage();
+                        if (paymentLinksPageInstance == null) paymentLinksPageInstance = new PaymentLinksPage();
                         pageInstance = paymentLinksPageInstance;
                         break;
 

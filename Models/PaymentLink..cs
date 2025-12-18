@@ -8,24 +8,20 @@ using System.Threading.Tasks;
 
 namespace App_3.Models
 {
-    public enum LinkStatus
+    public class PaymentLinkModel
     {
-        Active,
-        Inactive,
-        Expired
-    }
+        public string CustomerName { get; set; }
+        public decimal Amount { get; set; }
+        public string AmountFormatted => $"₹ {Amount}";
 
-    public class PaymentLink
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Link { get; set; } = string.Empty;
-        public LinkStatus Status { get; set; } = LinkStatus.Active;
+        public string Status { get; set; }   // Paid / Pending / Expired
+        public DateTime ExpiryDate { get; set; }
+        public string ExpiryFormatted => ExpiryDate.ToString("dd MMM yyyy");
+
+        public string PaymentMethod { get; set; }
+
     }
 }
-
-
-
-
 
 
 
