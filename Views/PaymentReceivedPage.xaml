@@ -4,53 +4,176 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:local="using:App_3.Models"
+    xmlns:conv="using:App_3.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="#F3F4F6">
 
-    <StackPanel Padding="20" Spacing="15">
+    <Page.Resources>
+        <conv:PaymentStatusToColorConverter x:Key="PaymentStatusToColorConverter"/>
+        <conv:PaymentStatusToForegroundConverter x:Key="PaymentStatusToForegroundConverter"/>
+    </Page.Resources>
 
-        <TextBlock Text="Payments Received" FontSize="32" FontWeight="Bold" Margin="0,0,0,20"/>
-        <!-- Top Section -->
-        <StackPanel Orientation="Horizontal" Spacing="10">
-            <TextBox x:Name="CustomerBox" Width="150" Header="Customer"/>
-            <TextBox x:Name="AmountBox" Width="100" Header="Amount"/>
-            <ComboBox x:Name="ModeBox" Width="120" Header="Mode">
-                <ComboBoxItem Content="Cash"/>
-                <ComboBoxItem Content="Card"/>
-                <ComboBoxItem Content="Online"/>
-            </ComboBox>
-            <TextBox x:Name="NotesBox" Width="200" Header="Notes"/>
-            <Button Content="Add Payment" Click="AddPayment_Click"/>
+    <ScrollViewer>
+        <StackPanel Padding="24" Spacing="24">
+
+            <!-- HEADER -->
+            <TextBlock Text="Payments Received"
+                       FontSize="32"
+                       FontWeight="Bold"/>
+
+            <!-- SUMMARY CARDS -->
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Background="White" CornerRadius="16" Padding="20">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Total Received" Foreground="#64748B"/>
+                        <TextBlock x:Name="TotalReceivedText"
+                                   Text="₹ 0"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="#15803D"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Background="White" CornerRadius="16" Padding="20">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Pending Amount" Foreground="#64748B"/>
+                        <TextBlock x:Name="PendingAmountText"
+                                   Text="₹ 0"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="#B45309"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ADD PAYMENT CARD -->
+            <Border Background="White" CornerRadius="16" Padding="20">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Add Payment" FontSize="18" FontWeight="Bold"/>
+
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="CustomerBox" PlaceholderText="Customer" Grid.Column="0"/>
+                        <TextBox x:Name="AmountBox" PlaceholderText="Amount" Grid.Column="1"/>
+                        <ComboBox x:Name="ModeBox" Grid.Column="2">
+                            <ComboBoxItem Content="Cash"/>
+                            <ComboBoxItem Content="Card"/>
+                            <ComboBoxItem Content="Online"/>
+                        </ComboBox>
+                        <TextBox x:Name="NotesBox" PlaceholderText="Notes" Grid.Column="3"/>
+                        <Button Content="Add Payment" Grid.Column="4"
+                                Click="AddPayment_Click"
+                                Background="#2563EB" Foreground="White"
+                                CornerRadius="8" Padding="12,6"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- FILTER CARD -->
+            <Border Background="White" CornerRadius="16" Padding="16">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="SearchBox" PlaceholderText="Search Customer / Invoice"
+                             TextChanged="SearchBox_TextChanged" Padding="12,6"/>
+                    <DatePicker x:Name="DateFilter" Grid.Column="1" DateChanged="DateFilter_DateChanged"/>
+                    <ComboBox x:Name="ModeFilter" Grid.Column="2" SelectionChanged="ModeFilter_SelectionChanged">
+                        <ComboBoxItem Content="All"/>
+                        <ComboBoxItem Content="Cash"/>
+                        <ComboBoxItem Content="Card"/>
+                        <ComboBoxItem Content="Online"/>
+                    </ComboBox>
+                </Grid>
+            </Border>
+
+            <!-- PAYMENTS TABLE -->
+            <Border Background="White" CornerRadius="16" Padding="20">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Payments Received" FontSize="16" FontWeight="SemiBold"/>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <!-- TABLE HEADER -->
+                            <Grid Background="#F3F4F6" Padding="10" ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Customer" FontWeight="Bold"/>
+                                <TextBlock Text="Invoice #" Grid.Column="1" FontWeight="Bold"/>
+                                <TextBlock Text="Amount" Grid.Column="2" FontWeight="Bold"/>
+                                <TextBlock Text="Mode" Grid.Column="3" FontWeight="Bold"/>
+                                <TextBlock Text="Status" Grid.Column="4" FontWeight="Bold"/>
+                                <TextBlock Text="Actions" Grid.Column="5" FontWeight="Bold"/>
+                            </Grid>
+
+                            <!-- TABLE ROWS -->
+                            <ItemsControl x:Name="PaymentsItemsControl">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="local:PaymentModel">
+                                        <Grid Padding="10" ColumnSpacing="12">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Text="{x:Bind Customer}" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{x:Bind InvoiceNumber}" Grid.Column="1"/>
+                                            <TextBlock Text="{x:Bind Amount}" Grid.Column="2"/>
+                                            <TextBlock Text="{x:Bind Mode}" Grid.Column="3"/>
+
+                                            <!-- STATUS -->
+                                            <Border Grid.Column="4" CornerRadius="12"
+                                                    Background="{x:Bind Status, Converter={StaticResource PaymentStatusToColorConverter}}"
+                                                    Padding="4,2" HorizontalAlignment="Center">
+                                                <TextBlock Text="{x:Bind Status}" FontSize="12" FontWeight="SemiBold"
+                                                           Foreground="{x:Bind Status, Converter={StaticResource PaymentStatusToForegroundConverter}}"
+                                                           HorizontalAlignment="Center"/>
+                                            </Border>
+
+                                            <!-- ACTIONS -->
+                                            <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                                                <Button Content="View" Height="32" MinWidth="60" CornerRadius="8" Background="#2563EB" Foreground="White"/>
+                                                <Button Content="Refund" Height="32" MinWidth="60" CornerRadius="8" Background="#F59E0B" Foreground="White"/>
+                                                <Button Content="Print" Height="32" MinWidth="60" CornerRadius="8" Background="#10B981" Foreground="White"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+
         </StackPanel>
-
-        <!-- Filters Section -->
-        <StackPanel Orientation="Horizontal" Spacing="10">
-            <TextBox x:Name="SearchBox" Width="200" PlaceholderText="Search..." TextChanged="SearchBox_TextChanged"/>
-            <DatePicker x:Name="DateFilter" DateChanged="DateFilter_DateChanged"/>
-            <ComboBox x:Name="ModeFilter" Width="120" SelectionChanged="ModeFilter_SelectionChanged">
-                <ComboBoxItem Content="All"/>
-                <ComboBoxItem Content="Cash"/>
-                <ComboBoxItem Content="Card"/>
-                <ComboBoxItem Content="Online"/>
-            </ComboBox>
-        </StackPanel>
-
-        <!-- DataGrid Section -->
-        <controls:DataGrid x:Name="PaymentsGrid"
-                           AutoGenerateColumns="False"
-                           Height="300">
-            <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="Customer" Binding="{Binding Customer}"/>
-                <controls:DataGridTextColumn Header="Amount" Binding="{Binding Amount}"/>
-                <controls:DataGridTextColumn Header="Mode" Binding="{Binding Mode}"/>
-                <controls:DataGridTextColumn Header="Notes" Binding="{Binding Notes}"/>
-                <controls:DataGridTextColumn Header="Date" Binding="{Binding DateFormatted}"/>
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
-
-    </StackPanel>
+    </ScrollViewer>
 </Page>
-
-
-
