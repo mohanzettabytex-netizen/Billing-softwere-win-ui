@@ -1,0 +1,185 @@
+<Page
+    x:Class="App_3.Views.ExpensesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App_3.Models"
+    xmlns:conv="using:App_3.Converters"
+    Background="#F3F4F6">
+
+    <!-- Converters -->
+    <Page.Resources>
+        <conv:ExpenseStatusToColorConverter x:Key="ExpenseStatusToColorConverter"/>
+        <conv:ExpenseStatusToForegroundConverter x:Key="ExpenseStatusToForegroundConverter"/>
+    </Page.Resources>
+
+    <!-- Overlay for Add/Edit Expense Form -->
+    <Grid x:Name="MainGrid">
+
+        <ScrollViewer>
+            <StackPanel Padding="24" Spacing="24">
+
+                <!-- HEADER -->
+                <Grid>
+                    <TextBlock Text="Expenses" FontSize="32" FontWeight="Bold"/>
+                    <Button Content="+ Add Expense"
+                            HorizontalAlignment="Right"
+                            Background="#2563EB"
+                            Foreground="White"
+                            CornerRadius="8"
+                            Padding="12,6"
+                            Click="AddExpense_Click"/>
+                </Grid>
+
+                <!-- SUMMARY CARDS -->
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Background="White" CornerRadius="16" Padding="20">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Total Expenses" Foreground="#64748B"/>
+                            <TextBlock Text="₹ 45,000" FontSize="22" FontWeight="Bold" Foreground="#15803D"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Background="White" CornerRadius="16" Padding="20">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Paid" Foreground="#64748B"/>
+                            <TextBlock Text="₹ 30,000" FontSize="22" FontWeight="Bold" Foreground="#15803D"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="2" Background="White" CornerRadius="16" Padding="20">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Pending" Foreground="#64748B"/>
+                            <TextBlock Text="₹ 15,000" FontSize="22" FontWeight="Bold" Foreground="#B45309"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- FILTERS -->
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="SearchBox" PlaceholderText="Search Vendor / Expense" Padding="12,6"/>
+                    <ComboBox x:Name="StatusFilter" Grid.Column="1">
+                        <ComboBoxItem Content="All"/>
+                        <ComboBoxItem Content="Paid"/>
+                        <ComboBoxItem Content="Pending"/>
+                        <ComboBoxItem Content="Unpaid"/>
+                    </ComboBox>
+                    <ComboBox x:Name="CategoryFilter" Grid.Column="2">
+                        <ComboBoxItem Content="All"/>
+                        <ComboBoxItem Content="Office"/>
+                        <ComboBoxItem Content="Travel"/>
+                        <ComboBoxItem Content="Supplies"/>
+                    </ComboBox>
+                </Grid>
+
+                <!-- TABLE -->
+                <Border Background="White" CornerRadius="16" Padding="20">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="Expenses" FontSize="16" FontWeight="SemiBold"/>
+
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                            <StackPanel MinWidth="1050">
+
+                                <!-- HEADER -->
+                                <Grid Background="#F3F4F6" Padding="12" ColumnSpacing="16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="140"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="120"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="Vendor" FontWeight="Bold"/>
+                                    <TextBlock Text="Description" Grid.Column="1" FontWeight="Bold"/>
+                                    <TextBlock Text="Amount" Grid.Column="2" FontWeight="Bold"/>
+                                    <TextBlock Text="Category" Grid.Column="3" FontWeight="Bold"/>
+                                    <TextBlock Text="Status" Grid.Column="4" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Actions" Grid.Column="5" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <!-- ROWS -->
+                                <ItemsControl x:Name="ExpensesItemsControl">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="local:ExpenseModel">
+                                            <Grid Padding="12" ColumnSpacing="16" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="200"/>
+                                                    <ColumnDefinition Width="200"/>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="140"/>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="120"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Text="{x:Bind Vendor}" TextTrimming="CharacterEllipsis"/>
+                                              
+                                                <TextBlock Text="{x:Bind Amount}" Grid.Column="2"/>
+                                                <TextBlock Text="{x:Bind Category}" Grid.Column="3"/>
+
+                                                <!-- STATUS -->
+                                                <Border Grid.Column="4" CornerRadius="12" Padding="6,2" HorizontalAlignment="Center"
+                                                        Background="{x:Bind Status, Converter={StaticResource ExpenseStatusToColorConverter}}">
+                                                    <TextBlock Text="{x:Bind Status}" FontSize="12" FontWeight="SemiBold"
+                                                               Foreground="{x:Bind Status, Converter={StaticResource ExpenseStatusToForegroundConverter}}"/>
+                                                </Border>
+
+                                                <!-- ACTIONS -->
+                                                <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                                                    <Button Content="Edit" Height="32" Width="70" CornerRadius="8" Background="#2563EB" Foreground="White" Click="EditExpense_Click"/>
+                                                    <Button Content="Delete" Height="32" Width="70" CornerRadius="8" Background="#EF4444" Foreground="White" Click="DeleteExpense_Click"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                            </StackPanel>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ADD / EDIT EXPENSE FORM OVERLAY -->
+        <Grid x:Name="ExpenseFormOverlay" Background="#80000000" Visibility="Collapsed">
+            <Border Background="White" CornerRadius="16" Padding="24" Width="500" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Spacing="12">
+                    <TextBlock x:Name="FormTitle" Text="Add Expense" FontSize="20" FontWeight="Bold"/>
+                    <TextBox x:Name="VendorBox" PlaceholderText="Vendor"/>
+                    <TextBox x:Name="DescriptionBox" PlaceholderText="Description"/>
+                    <TextBox x:Name="AmountBox" PlaceholderText="Amount"/>
+                    <ComboBox x:Name="CategoryBox">
+                        <ComboBoxItem Content="Office"/>
+                        <ComboBoxItem Content="Travel"/>
+                        <ComboBoxItem Content="Supplies"/>
+                    </ComboBox>
+                    <ComboBox x:Name="StatusBox">
+                        <ComboBoxItem Content="Paid"/>
+                        <ComboBoxItem Content="Pending"/>
+                        <ComboBoxItem Content="Unpaid"/>
+                    </ComboBox>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+                        <Button Content="Cancel" Click="CancelExpenseForm_Click" Background="#F3F4F6"/>
+                        <Button Content="Save" Click="SaveExpense_Click" Background="#2563EB" Foreground="White"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+    </Grid>
+</Page>

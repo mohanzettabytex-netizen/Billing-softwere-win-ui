@@ -59,7 +59,21 @@
                     <SymbolIcon Symbol="RepeatAll"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
+
+
+            <NavigationViewItem Content="Expenses" Tag="Expenses">
+                <NavigationViewItem.Icon>
+                    <SymbolIcon Symbol="Tag"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
+            <NavigationViewItem Content="Reports" Tag="Reports">
+                <NavigationViewItem.Icon>
+                    <SymbolIcon Symbol="AllApps"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
         </NavigationView.MenuItems>
+
 
         <NavigationView.Content>
             <Frame x:Name="ContentFrame"/>

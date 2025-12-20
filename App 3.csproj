@@ -43,6 +43,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\ReportsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\ExpensesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="Views\PartiesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

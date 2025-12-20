@@ -16,6 +16,8 @@ namespace App_3
         private PaymentLinksPage paymentLinksPageInstance;
         private PaymentReceivedPage paymentsReceivedPageInstance;
         private RecurringInvoicesPage recurringInvoicesPageInstance;
+        private ExpensesPage expensesPageInstance;
+        private ReportsPage reportsPageInstance;
 
         public MainWindow()
         {
@@ -78,6 +80,19 @@ namespace App_3
                         if (recurringInvoicesPageInstance == null) recurringInvoicesPageInstance = new RecurringInvoicesPage();
                         pageInstance = recurringInvoicesPageInstance;
                         break;
+
+                    case "Expenses":
+                        if (expensesPageInstance == null) expensesPageInstance = new ExpensesPage();
+                        pageInstance = expensesPageInstance;
+                        break;
+
+                    case "Reports":
+                        if (reportsPageInstance == null) reportsPageInstance = new ReportsPage();
+                        pageInstance = reportsPageInstance;
+                        break;
+
+
+
                 }
 
                 // Navigate only if a valid instance is selected
