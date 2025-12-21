@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Page
     x:Class="App_3.Views.PaymentLinksPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -7,246 +6,241 @@
     xmlns:local="using:App_3.Converters">
 
     <Page.Resources>
-        <!-- Converters for Status color and empty state -->
-        <local:StatusToColorConverter x:Key="StatusToColorConverter"/>
-        <local:StatusToForegroundConverter x:Key="StatusToForegroundConverter"/>
-        <local:EmptyStateVisibilityConverter x:Key="EmptyStateVisibilityConverter"/>
+        <local:StatusToColorConverter x:Key="StatusBg"/>
+        <local:StatusToForegroundConverter x:Key="StatusFg"/>
+        <local:EmptyStateVisibilityConverter x:Key="ZeroCountToVisibilityConverter"/>
+        <local:GreaterThanZeroVisibilityConverter x:Key="GreaterThanZeroVisibilityConverter"/>
     </Page.Resources>
 
     <Grid Background="#F3F4F6">
 
-        <!-- ================= MAIN CONTENT ================= -->
+        <!-- ================= MAIN SCROLLVIEWER ================= -->
         <ScrollViewer>
             <StackPanel Padding="24" Spacing="24">
 
-                <!-- ================= HEADER ================= -->
-                <Grid VerticalAlignment="Center">
+                <!-- HEADER -->
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Spacing="6">
+                    <StackPanel>
                         <TextBlock Text="Payment Links"
-                                   FontSize="30"
+                                   FontSize="28"
                                    FontWeight="Bold"/>
-                        <TextBlock Text="Create and manage payment links"
+                        <TextBlock Text="Create &amp; manage payment links"
                                    FontSize="13"
                                    Foreground="#64748B"/>
                     </StackPanel>
 
                     <Button x:Name="BtnCreatePaymentLink"
-                            Grid.Column="1"
                             Content="+ Create Payment Link"
-                            Height="42"
-                            Padding="22,0"
+                            Click="BtnCreatePaymentLink_Click"
+                            Height="40"
+                            Padding="20,0"
+                            CornerRadius="10"
                             Background="#2563EB"
                             Foreground="White"
-                            CornerRadius="10"/>
+                            Grid.Column="1"/>
                 </Grid>
 
-                <!-- ================= SUMMARY CARDS ================= -->
+                <!-- SUMMARY CARDS -->
                 <Grid ColumnSpacing="16">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
                     <Border Background="White" CornerRadius="16" Padding="20">
-                        <StackPanel Spacing="6">
+                        <StackPanel>
                             <TextBlock Text="Collected" Foreground="#64748B"/>
-                            <TextBlock Text="₹ 12,500"
-                                       FontSize="22"
-                                       FontWeight="Bold"
-                                       Foreground="#15803D"/>
+                            <TextBlock Text="₹12,500" FontSize="22" FontWeight="Bold" Foreground="#15803D"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Column="1"
-                            Background="White"
-                            CornerRadius="16"
-                            Padding="20">
-                        <StackPanel Spacing="6">
+                    <Border Grid.Column="1" Background="White" CornerRadius="16" Padding="20">
+                        <StackPanel>
                             <TextBlock Text="Pending" Foreground="#64748B"/>
-                            <TextBlock Text="₹ 6,300"
-                                       FontSize="22"
-                                       FontWeight="Bold"
-                                       Foreground="#B45309"/>
+                            <TextBlock Text="₹6,300" FontSize="22" FontWeight="Bold" Foreground="#B45309"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Grid.Column="2"
-                            Background="White"
-                            CornerRadius="16"
-                            Padding="20">
-                        <StackPanel Spacing="6">
+                    <Border Grid.Column="2" Background="White" CornerRadius="16" Padding="20">
+                        <StackPanel>
                             <TextBlock Text="Expired" Foreground="#64748B"/>
-                            <TextBlock Text="2 Links"
-                                       FontSize="22"
-                                       FontWeight="Bold"
-                                       Foreground="#B91C1C"/>
+                            <TextBlock Text="2 Links" FontSize="22" FontWeight="Bold" Foreground="#B91C1C"/>
                         </StackPanel>
                     </Border>
                 </Grid>
 
-                <!-- ================= SEARCH + FILTER ================= -->
-                <Border Background="White"
-        CornerRadius="16"
-        Padding="16">
-                    <Grid ColumnSpacing="16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="180"/>
-                            <ColumnDefinition Width="180"/>
-                        </Grid.ColumnDefinitions>
+                <!-- Search + Filters -->
+                <Grid ColumnSpacing="12" RowSpacing="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <!-- SEARCH -->
-                        <Grid Width="260">
-                            <TextBox x:Name="SearchBox"
-              PlaceholderText="Search Customer name"
-              Padding="36,8,10,8"
-              CornerRadius="8"/>
-                            <SymbolIcon Symbol="Find"
-                 Foreground="#64748B"
-                 Width="16"
-                 Height="16"
-                 Margin="12,0,0,0"
-                 VerticalAlignment="Center"
-                 HorizontalAlignment="Left"
-                 IsHitTestVisible="False"/>
-                        </Grid>
-
-
-                        <ComboBox Grid.Column="1"
-                  Height="40"
-                  PlaceholderText="Status"
-                  x:Name="CmbStatus">
-                            <ComboBoxItem Content="All"/>
-                            <ComboBoxItem Content="Paid"/>
-                            <ComboBoxItem Content="Pending"/>
-                            <ComboBoxItem Content="Expired"/>
-                        </ComboBox>
-
-                        <!-- Optional: Payment Method filter -->
-                        <ComboBox Grid.Column="2"
-                  Height="40"
-                  PlaceholderText="Payment Method"
-                  x:Name="CmbPaymentMethod">
-                            <ComboBoxItem Content="All"/>
-                            <ComboBoxItem Content="UPI"/>
-                            <ComboBoxItem Content="Card"/>
-                            <ComboBoxItem Content="Bank Transfer"/>
-                        </ComboBox>
+                    <Grid>
+                        <TextBox x:Name="TxtSearch"
+             PlaceholderText="Search customer name"
+             Height="40"
+             Padding="36,0,12,0"
+             CornerRadius="8"/>
+                        <TextBlock Text="🔍"
+           FontSize="16"
+           Margin="12,0,0,0"
+           VerticalAlignment="Center"/>
                     </Grid>
-                </Border>
 
-                <!-- ================= PAYMENT LINKS TABLE (Responsive) ================= -->
-                <Border Background="White"
-        CornerRadius="16"
-        Padding="20">
+                    <!-- Status Filter -->
+                    <ComboBox x:Name="CmbStatusFilter"
+              Grid.Column="1"
+              Height="40"
+              CornerRadius="8"
+              PlaceholderText="Status">
+                        <ComboBoxItem Content="All"/>
+                        <ComboBoxItem Content="Paid"/>
+                        <ComboBoxItem Content="Pending"/>
+                        <ComboBoxItem Content="Expired"/>
+                    </ComboBox>
+
+                    <!-- Payment Method Filter -->
+                    <ComboBox x:Name="CmbMethodFilter"
+              Grid.Column="2"
+              Height="40"
+              CornerRadius="8"
+              PlaceholderText="Method">
+                        <ComboBoxItem Content="All"/>
+                        <ComboBoxItem Content="UPI"/>
+                        <ComboBoxItem Content="Card"/>
+                        <ComboBoxItem Content="Bank Transfer"/>
+                    </ComboBox>
+                </Grid>
+
+
+                <!-- PAYMENT LINKS TABLE -->
+                <Border Background="White" CornerRadius="16" Padding="16">
                     <StackPanel Spacing="12">
 
-                        <TextBlock Text="Payment Links"
-                   FontSize="16"
-                   FontWeight="SemiBold"/>
+                        <TextBlock Text="Payment Links List"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"/>
 
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto">
-                            <StackPanel>
+                        <!-- EMPTY STATE -->
+                        <StackPanel x:Name="EmptyStatePanel"
+                                    Visibility="{x:Bind PaymentLinks.Count, Converter={StaticResource ZeroCountToVisibilityConverter}}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Padding="40"
+                                    Spacing="12">
+                            <SymbolIcon Symbol="Link" Width="48" Height="48"/>
+                            <TextBlock Text="No payment links yet"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Create a payment link to start collecting payments"
+                                       FontSize="13"
+                                       Foreground="#64748B"
+                                       TextAlignment="Center"/>
+                            <Button Content="+ Create Payment Link"
+                                    Padding="18,6"
+                                    Background="#2563EB"
+                                    Foreground="White"
+                                    CornerRadius="10"
+                                    Click="BtnCreatePaymentLink_Click"/>
+                        </StackPanel>
 
-                                <!-- TABLE HEADER -->
-                                <Grid Background="#F3F4F6"
-                      Padding="10"
-                      ColumnSpacing="16">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <!-- Customer -->
-                                        <ColumnDefinition Width="*"/>
-                                        <!-- Amount -->
-                                        <ColumnDefinition Width="*"/>
-                                        <!-- Status -->
-                                        <ColumnDefinition Width="*"/>
-                                        <!-- Expiry -->
-                                        <ColumnDefinition Width="*"/>
-                                        <!-- Payment Method -->
-                                        <ColumnDefinition Width="2*"/>
-                                        <!-- Actions -->
-                                    </Grid.ColumnDefinitions>
+                        <!-- TABLE HEADER -->
+                        <Grid Background="#F1F5F9"
+                              Padding="12"
+                              Visibility="{x:Bind PaymentLinks.Count, Converter={StaticResource GreaterThanZeroVisibilityConverter}}"
+                              CornerRadius="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Customer" FontWeight="Bold"/>
+                            <TextBlock Text="Amount" Grid.Column="1" HorizontalAlignment="Right" FontWeight="Bold"/>
+                            <TextBlock Text="Status" Grid.Column="2" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <TextBlock Text="Expiry" Grid.Column="3" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <TextBlock Text="Method" Grid.Column="4" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <TextBlock Text="Actions" Grid.Column="5" FontWeight="Bold"/>
+                        </Grid>
 
-                                    <TextBlock Text="Customer" FontWeight="Bold"/>
-                                    <TextBlock Text="Amount" Grid.Column="1" FontWeight="Bold"/>
-                                    <TextBlock Text="Status" Grid.Column="2" FontWeight="Bold"/>
-                                    <TextBlock Text="Expiry" Grid.Column="3" FontWeight="Bold"/>
-                                    <TextBlock Text="Method" Grid.Column="4" FontWeight="Bold"/>
-                                    <TextBlock Text="Actions" Grid.Column="5" FontWeight="Bold"/>
-                                </Grid>
+                        <!-- TABLE ROWS -->
+                        <ItemsControl ItemsSource="{x:Bind PaymentLinks}"
+                                      Visibility="{x:Bind PaymentLinks.Count, Converter={StaticResource GreaterThanZeroVisibilityConverter}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="Models:PaymentLinkModel">
+                                    <Border x:Name="RowRoot"
+                                            Padding="10"
+                                            BorderThickness="0,0,0,1"
+                                            BorderBrush="#E5E7EB"
+                                            Background="Transparent">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames
+                                                            Storyboard.TargetName="RowRoot"
+                                                            Storyboard.TargetProperty="Background">
+                                                            <DiscreteObjectKeyFrame Value="#F8FAFC"/>
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
 
-                                <!-- DYNAMIC ROWS -->
-                                <ItemsControl ItemsSource="{x:Bind PaymentLinks, Mode=OneWay}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="Models:PaymentLinkModel">
-                                            <Grid Padding="10" ColumnSpacing="12">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="1.5*"/>
-                                                    <ColumnDefinition Width="1*"/>
-                                                    <ColumnDefinition Width="1*"/>
-                                                    <ColumnDefinition Width="1*"/>
-                                                    <ColumnDefinition Width="1*"/>
-                                                    <ColumnDefinition Width="2*"/>
-                                                </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1.2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
 
-                                                <TextBlock Text="{x:Bind CustomerName}" 
-                                           TextTrimming="CharacterEllipsis"/>
-                                                <TextBlock Text="{x:Bind AmountFormatted}" Grid.Column="1"
-                                           HorizontalAlignment="Right"/>
+                                            <TextBlock Text="{x:Bind CustomerName}" FontWeight="SemiBold"/>
+                                            <TextBlock Grid.Column="1" Text="{x:Bind AmountFormatted}" HorizontalAlignment="Right" FontWeight="Bold"/>
 
-                                                <Border Grid.Column="2"
-                                        Background="{x:Bind Status, Converter={StaticResource StatusToColorConverter}}"
-                                        CornerRadius="12"
-                                        Padding="4,2"
-                                        HorizontalAlignment="Center">
-                                                    <TextBlock Text="{x:Bind Status}"
-                                               FontSize="12"
-                                               FontWeight="SemiBold"
-                                               Foreground="{x:Bind Status, Converter={StaticResource StatusToForegroundConverter}}"
-                                               HorizontalAlignment="Center"/>
-                                                </Border>
+                                            <Border Grid.Column="2"
+                                                    Padding="6,2"
+                                                    CornerRadius="12"
+                                                    HorizontalAlignment="Center"
+                                                    Background="{x:Bind Status, Converter={StaticResource StatusBg}}">
+                                                <TextBlock Text="{x:Bind Status}" FontSize="12" FontWeight="SemiBold"
+                                                           Foreground="{x:Bind Status, Converter={StaticResource StatusFg}}"/>
+                                            </Border>
 
-                                                <TextBlock Text="{x:Bind ExpiryFormatted}" Grid.Column="3"
-                                           HorizontalAlignment="Center"/>
-                                                <TextBlock Text="{x:Bind PaymentMethod}" Grid.Column="4"
-                                           HorizontalAlignment="Center"/>
+                                            <TextBlock Grid.Column="3" Text="{x:Bind ExpiryFormatted}" HorizontalAlignment="Center"/>
+                                            <TextBlock Grid.Column="4" Text="{x:Bind PaymentMethod}" HorizontalAlignment="Center"/>
 
-                                                <!-- ACTION BUTTONS -->
-                                                <StackPanel Grid.Column="5"
-                                            Orientation="Horizontal"
-                                            Spacing="8"
-                                            HorizontalAlignment="Right">
-                                                    <Button Content="Share" Height="32" MinWidth="60"/>
-                                                    <Button Content="Edit" Height="32" MinWidth="60"/>
-                                                    <Button Content="Delete" Height="32" MinWidth="60"/>
-                                                </StackPanel>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                            <!-- ACTION BUTTONS -->
+                                            <StackPanel Grid.Column="5" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                                                <!-- Share -->
+                                                <Button Width="32" Height="32" Padding="0" FontSize="16" FontFamily="Segoe UI Emoji" Content="🔗" Background="#E5E7EB" CornerRadius="8"/>
 
-                                <!-- EMPTY STATE -->
-                                <StackPanel Padding="32"
-                            HorizontalAlignment="Center"
-                            Spacing="8"
-                            Visibility="{x:Bind PaymentLinks.Count, Converter={StaticResource EmptyStateVisibilityConverter}}">
-                                    <TextBlock Text="No more payment links"
-                               FontWeight="SemiBold"
-                               HorizontalAlignment="Center"/>
-                                    <TextBlock Text="Click 'Create Payment Link' to add new"
-                               FontSize="13"
-                               Foreground="#64748B"
-                               HorizontalAlignment="Center"/>
-                                </StackPanel>
+                                                <!-- Edit -->
+                                                <Button Width="32" Height="32" Padding="0" FontSize="16" FontFamily="Segoe UI Emoji" Content="✏️" Background="#E5E7EB" CornerRadius="8"/>
 
-                            </StackPanel>
-                        </ScrollViewer>
+                                                <!-- Delete -->
+                                                <Button Width="32" Height="32" Padding="0" FontSize="16" FontFamily="Segoe UI Emoji" Content="🗑️" Background="#FEE2E2" CornerRadius="8"/>
+                                            </StackPanel>
+
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
                     </StackPanel>
                 </Border>
@@ -254,40 +248,69 @@
             </StackPanel>
         </ScrollViewer>
 
-        <!-- ================= MODAL + BACKGROUND BLUR ================= -->
-        <Grid x:Name="ModalBackground"
-              Background="#80000000"
-              Visibility="Collapsed">
+        <!-- ================= PAYMENT LINK MODAL ================= -->
+        <Grid x:Name="ModalBackground" Visibility="Collapsed" Background="#80000000">
+            <Border Width="460" Background="White" CornerRadius="16" Padding="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="16">
 
-            <Border Background="White"
-                    Width="420"
-                    CornerRadius="16"
-                    Padding="24"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
+                        <TextBlock Text="Create Payment Link" FontSize="18" FontWeight="Bold"/>
 
-                <StackPanel Spacing="16">
+                        <!-- CUSTOMER NAME -->
+                        <StackPanel>
+                            <TextBlock Text="Customer Name *" Foreground="Red" FontSize="12" Margin="0,0,0,4"/>
+                            <TextBox x:Name="TxtCustomerName" Height="40" CornerRadius="8" PlaceholderText="Enter customer name"/>
+                        </StackPanel>
 
-                    <TextBlock Text="Create Payment Link"
-                               FontSize="18"
-                               FontWeight="Bold"/>
+                        <!-- AMOUNT -->
+                        <StackPanel>
+                            <TextBlock Text="Amount *" Foreground="Red" FontSize="12" Margin="0,0,0,4"/>
+                            <TextBox x:Name="TxtAmount" Height="40" CornerRadius="8" PlaceholderText="Enter amount"/>
+                        </StackPanel>
 
-                    <TextBox PlaceholderText="Amount" Height="40"/>
-                    <ComboBox PlaceholderText="Select Customer" Height="40"/>
-                    <TextBox PlaceholderText="Description" Height="40"/>
-                    <DatePicker/>
+                        <!-- PAYMENT METHOD -->
+                        <StackPanel>
+                            <TextBlock Text="Payment Method *" Foreground="Red" FontSize="12" Margin="0,0,0,4"/>
+                            <ComboBox x:Name="CmbPaymentMethod" Height="40" PlaceholderText="Select payment method">
+                                <ComboBoxItem Content="UPI"/>
+                                <ComboBoxItem Content="Card"/>
+                                <ComboBoxItem Content="Bank Transfer"/>
+                                <ComboBoxItem Content="Cash"/>
+                            </ComboBox>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Right"
-                                Spacing="12">
-                        <Button x:Name="BtnCancelModal" Content="Cancel"/>
-                        <Button Content="Generate Link"
-                                Background="#16A34A"
-                                Foreground="White"/>
+                        <!-- EXPIRY DATE -->
+                        <StackPanel>
+                            <TextBlock Text="Expiry Date *" Foreground="Red" FontSize="12" Margin="0,0,0,4"/>
+                            <CalendarDatePicker x:Name="DpExpiryDate" Height="40"/>
+                        </StackPanel>
+
+                        <!-- STATUS -->
+                        <StackPanel>
+                            <TextBlock Text="Status" Foreground="#64748B" FontSize="12" Margin="0,0,0,4"/>
+                            <ComboBox x:Name="CmbPaymentStatus" Height="40">
+                                <ComboBoxItem Content="Pending"/>
+                                <ComboBoxItem Content="Paid"/>
+                                <ComboBoxItem Content="Expired"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!-- DESCRIPTION -->
+                        <StackPanel>
+                            <TextBlock Text="Description" Foreground="#64748B" FontSize="12" Margin="0,0,0,4"/>
+                            <TextBox x:Name="TxtDescription" Height="70" AcceptsReturn="True" TextWrapping="Wrap" CornerRadius="8" PlaceholderText="Optional notes for this payment link"/>
+                        </StackPanel>
+
+                        <!-- ACTION BUTTONS -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12" Margin="0,16,0,0">
+                            <Button x:Name="BtnCancelModal" Content="Cancel" Width="100" Click="BtnCancelModal_Click"/>
+                            <Button x:Name="BtnGenerateLink" Content="Generate" Width="140" Background="#2563EB" Foreground="White" Click="BtnGenerateLink_Click"/>
+                        </StackPanel>
+
                     </StackPanel>
-
-                </StackPanel>
+                </ScrollViewer>
             </Border>
         </Grid>
+
     </Grid>
 </Page>

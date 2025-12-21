@@ -5,7 +5,7 @@ using System;
 
 namespace App_3.Converters
 {
-    public class QuoteStatusToColorConverter : IValueConverter
+    public class QuotesConverters : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

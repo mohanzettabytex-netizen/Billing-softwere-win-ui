@@ -6,66 +6,99 @@
     xmlns:Models="using:App_3.Models"
     xmlns:local="using:App_3.Converters">
 
-    <!-- ================= RESOURCES ================= -->
     <Page.Resources>
-        <local:StatusToColorConverter x:Key="StatusToColorConverter"/>
-        <local:StatusToForegroundConverter x:Key="StatusToForegroundConverter"/>
+        <local:QuotesConverters x:Key="QuotesConverters"/>
         <local:EmptyStateVisibilityConverter x:Key="EmptyStateVisibilityConverter"/>
     </Page.Resources>
 
-    <!-- ================= ROOT ================= -->
     <Grid Background="#F3F4F6">
 
-        <!-- ================= MAIN CONTENT ================= -->
         <ScrollViewer>
             <StackPanel Padding="24" Spacing="20">
 
-                <!-- ===== HEADER ===== -->
-                <Border Background="White" CornerRadius="16" Padding="24">
+                <!-- HEADER -->
+                <Border Background="White" CornerRadius="16" Padding="24" >
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Spacing="6">
+                            <!-- Main Title -->
                             <TextBlock Text="Quotes"
-                                       FontSize="30"
-                                       FontWeight="Bold"
-                                       Foreground="#0F172A"/>
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="#0F172A"/>
 
-                            <TextBlock Text="Total: 12 | Draft: 4 | Approved: 6"
-                                       FontSize="13"
-                                       Foreground="#64748B"/>
+                            <!-- Subheading / Description -->
+                            <TextBlock Text="Track all your customer quotes in one place"
+                       Foreground="#64748B"
+                       FontSize="13"
+                       Margin="0,0,0,4"/>
+
+                            <!-- Status badges -->
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Border Background="#F1F5F9" Padding="6,4" CornerRadius="8">
+                                    <TextBlock Text="Total: 12" FontSize="12"/>
+                                </Border>
+                                <Border Background="#FEF9C3" Padding="6,4" CornerRadius="8">
+                                    <TextBlock Text="Draft: 4" FontSize="12"/>
+                                </Border>
+                                <Border Background="#DCFCE7" Padding="6,4" CornerRadius="8">
+                                    <TextBlock Text="Approved: 6" FontSize="12"/>
+                                </Border>
+                            </StackPanel>
                         </StackPanel>
 
+                        <!-- Create Quote Button -->
                         <Button x:Name="BtnCreateQuote"
-                                Grid.Column="1"
-                                Content="+ Create New Quote"
-                                Height="42"
-                                Padding="22,0"
-                                Background="#2563EB"
-                                Foreground="White"
-                                CornerRadius="10"/>
+                Grid.Column="1"
+                Height="42"
+                Padding="18,0"
+                Background="#2563EB"
+                Foreground="White"
+                CornerRadius="10">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="+" FontSize="16"/>
+                                <TextBlock Text="Create Quote" FontSize="14"/>
+                            </StackPanel>
+                        </Button>
                     </Grid>
                 </Border>
 
-                <!-- ===== SEARCH & FILTER ===== -->
+                <!-- SEARCH & FILTER -->
                 <Border Background="White" CornerRadius="16" Padding="16">
-                    <Grid ColumnSpacing="12">
+                    <Grid ColumnSpacing="12" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition/>
                             <ColumnDefinition Width="160"/>
                             <ColumnDefinition Width="160"/>
                             <ColumnDefinition Width="160"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBox x:Name="TxtSearch"
-                                 PlaceholderText="Search by Customer / Quote No"/>
+                        <!-- Search -->
+                        <Grid VerticalAlignment="Center">
+                            <TextBox x:Name="TxtSearch"
+                     Height="40"
+                     Padding="36,0,12,0"
+                     VerticalContentAlignment="Center"
+                     PlaceholderText="Search quotes"/>
 
+                            <TextBlock Text="🔍"
+                       FontSize="14"
+                       Margin="12,0,0,0"
+                       VerticalAlignment="Center"
+                       Foreground="Gray"
+                       IsHitTestVisible="False"/>
+                        </Grid>
+
+                        <!-- Status -->
                         <ComboBox x:Name="CmbStatus"
-                                  Grid.Column="1"
-                                  PlaceholderText="Status">
+                  Grid.Column="1"
+                  Height="40"
+                  VerticalContentAlignment="Center"
+                  PlaceholderText="Status">
                             <ComboBoxItem Content="All"/>
                             <ComboBoxItem Content="Draft"/>
                             <ComboBoxItem Content="Sent"/>
@@ -73,212 +106,179 @@
                             <ComboBoxItem Content="Rejected"/>
                         </ComboBox>
 
-                        <DatePicker Grid.Column="2"
-                                    Header="From Date"/>
+                        <!-- From Date -->
+                        <CalendarDatePicker x:Name="DpFrom"
+                            Grid.Column="2"
+                            Height="40"
+                            PlaceholderText="From date"/>
 
-                        <DatePicker Grid.Column="3"
-                                    Header="To Date"/>
+                        <!-- To Date -->
+                        <CalendarDatePicker x:Name="DpTo"
+                            Grid.Column="3"
+                            Height="40"
+                            PlaceholderText="To date"/>
                     </Grid>
                 </Border>
 
-                <!-- ===== QUOTES TABLE (RESPONSIVE) ===== -->
-                <Border Background="White"
-        CornerRadius="16"
-        Padding="16">
 
-                    <!-- Horizontal scroll for small screens -->
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                  VerticalScrollBarVisibility="Disabled">
-
-                        <Grid MinWidth="950">
+                <!-- TABLE -->
+                <Border Background="White" CornerRadius="16" Padding="16">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                        <Grid MinWidth="900">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <!-- ===== TABLE HEADER ===== -->
-                            <Grid Grid.Row="0"
-                  Background="#F3F4F6"
-                  Padding="12"
-                  ColumnSpacing="12">
-
+                            <!-- HEADER -->
+                            <Grid Background="#F3F4F6" Padding="12" ColumnSpacing="12">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="110"/>
-                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="110"/>
-                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Quote No" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="1" Text="Customer" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="2" Text="Quote Date" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="3" Text="Amount" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="4" Text="Valid Till" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="5" Text="Status" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="6" Text="Actions" FontWeight="SemiBold"/>
+                                <TextBlock Text="Quote No" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Customer" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="Quote Date" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="3" Text="Amount" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="4" Text="Valid Till" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="5" Text="Status" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="6" Text="Action" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="7" Text="Description" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </Grid>
 
-                            <!-- ===== TABLE BODY ===== -->
+                            <!-- ROWS -->
                             <ListView x:Name="QuotesList"
                       Grid.Row="1"
                       Margin="0,8,0,0"
-                      BorderThickness="0">
+                      BorderThickness="0"
+                      SelectionMode="None"
+                      HorizontalAlignment="Stretch">
 
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="Models:QuoteModel">
+                                        <Border Padding="12" CornerRadius="10" Background="White" Margin="0,0,0,8">
+                                            <Grid ColumnSpacing="12">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="80"/>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="130"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="140"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
 
-                                        <Grid Padding="10"
-                              ColumnSpacing="12">
+                                                <TextBlock Text="{x:Bind QuoteNo}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{x:Bind CustomerName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="2" Text="{x:Bind QuoteDateFormatted}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="3" Text="{x:Bind AmountFormatted}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="4" Text="{x:Bind ValidTillFormatted}" VerticalAlignment="Center"/>
 
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="110"/>
-                                                <ColumnDefinition Width="220"/>
-                                                <ColumnDefinition Width="130"/>
-                                                <ColumnDefinition Width="120"/>
-                                                <ColumnDefinition Width="120"/>
-                                                <ColumnDefinition Width="110"/>
-                                                <ColumnDefinition Width="180"/>
-                                            </Grid.ColumnDefinitions>
+                                                <Border Grid.Column="5" Padding="6,3" CornerRadius="12" Background="{x:Bind Status, Converter={StaticResource QuotesConverters}}" VerticalAlignment="Center">
+                                                    <TextBlock Text="{x:Bind Status}" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
 
-                                            <TextBlock Text="{x:Bind QuoteNo}"
-                                       VerticalAlignment="Center"/>
+                                                <Grid Grid.Column="6" VerticalAlignment="Center">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Button Grid.Column="0" Content="View" Height="28" Padding="12,0" Background="#EFF6FF" Foreground="#2563EB" CornerRadius="6"/>
+                                                    <Button Grid.Column="1" Content="Delete" Height="28" Padding="12,0" Background="#FEF2F2" Foreground="#DC2626" CornerRadius="6"/>
+                                                </Grid>
 
-                                            <TextBlock Grid.Column="1"
-                                       Text="{x:Bind CustomerName}"
-                                       VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis"/>
-
-                                            <TextBlock Grid.Column="2"
-                                       Text="{x:Bind QuoteDateFormatted}"
-                                       VerticalAlignment="Center"/>
-
-                                            <TextBlock Grid.Column="3"
-                                       Text="{x:Bind AmountFormatted}"
-                                       VerticalAlignment="Center"/>
-
-                                            <TextBlock Grid.Column="4"
-                                       Text="{x:Bind ValidTillFormatted}"
-                                       VerticalAlignment="Center"/>
-
-                                            <!-- STATUS -->
-                                            <Border Grid.Column="5"
-                                    Padding="6,4"
-                                    CornerRadius="12"
-                                    HorizontalAlignment="Left"
-                                    Background="{x:Bind Status, Converter={StaticResource StatusToColorConverter}}">
-                                                <TextBlock Text="{x:Bind Status}"
-                                           FontSize="12"
-                                           Foreground="{x:Bind Status, Converter={StaticResource StatusToForegroundConverter}}"/>
-                                            </Border>
-
-                                            <!-- ACTIONS (NO OVERLAY) -->
-                                            <StackPanel Grid.Column="6"
-                                        Orientation="Horizontal"
-                                        Spacing="6"
-                                        HorizontalAlignment="Left">
-
-                                                <Button Content="Edit"
-                                        Height="30"
-                                        Padding="12,0"
-                                        Background="#2563EB"
-                                        Foreground="White"
-                                        CornerRadius="6"/>
-
-                                                <Button Content="Share"
-                                        Height="30"
-                                        Padding="12,0"
-                                        Background="#16A34A"
-                                        Foreground="White"
-                                        CornerRadius="6"/>
-
-                                                <Button Content="🗑"
-                                        Height="30"
-                                        Width="32"
-                                        Background="Transparent"
-                                        Foreground="#DC2626"/>
-                                            </StackPanel>
-
-                                        </Grid>
+                                                <TextBlock Grid.Column="7" Text="{x:Bind Description}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
 
-                            <!-- ===== EMPTY STATE ===== -->
-                            <TextBlock Grid.Row="1"
-                       Text="No quotes found"
-                       Foreground="Gray"
-                       FontSize="14"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Visibility="{x:Bind QuotesList.Items.Count, Converter={StaticResource EmptyStateVisibilityConverter}}"/>
+                            <!-- EMPTY STATE -->
+                            <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{x:Bind QuotesList.Items.Count, Converter={StaticResource EmptyStateVisibilityConverter}}">
+                                <TextBlock Text="📄" FontSize="32" HorizontalAlignment="Center"/>
+                                <TextBlock Text="No quotes found" Foreground="Gray"/>
+                            </StackPanel>
+
                         </Grid>
                     </ScrollViewer>
                 </Border>
-
             </StackPanel>
         </ScrollViewer>
 
-        <!-- ================= CREATE QUOTE MODAL (FORM) ================= -->
+        <!-- MODAL -->
         <Grid x:Name="ModalBackground"
-              Background="#80000000"
-              Visibility="Collapsed">
-
-            <Border Background="White"
-                    Width="420"
-                    CornerRadius="16"
-                    Padding="24"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-
+      Background="#80000000"
+      Visibility="Collapsed">
+            <Border Width="420"
+            Background="White"
+            CornerRadius="16"
+            Padding="24"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
                 <StackPanel Spacing="16">
 
-                    <TextBlock Text="Create New Quote"
-                               FontSize="18"
-                               FontWeight="Bold"/>
+                    <TextBlock Text="Create New Quote" FontSize="18" FontWeight="Bold"/>
 
-                    <TextBox x:Name="TxtCustomerName"
-                             PlaceholderText="Customer Name"
-                             Height="40"/>
+                    <!-- Customer Name (Mandatory) -->
+                    <StackPanel>
+                        <TextBlock Text="Customer Name *" Foreground="Red" FontSize="12"/>
+                        <TextBox x:Name="TxtCustomerName" CornerRadius="8" Height="40"/>
+                    </StackPanel>
 
-                    <TextBox x:Name="TxtQuoteNo"
-                             PlaceholderText="Quote No"
-                             Height="40"/>
+                    <!-- Quote Number (Mandatory) -->
+                    <StackPanel>
+                        <TextBlock Text="Quote Number *" Foreground="Red" FontSize="12"/>
+                        <TextBox x:Name="TxtQuoteNo" CornerRadius="8" Height="40"/>
+                    </StackPanel>
 
-                    <TextBox x:Name="TxtAmount"
-                             PlaceholderText="Amount"
-                             Height="40"/>
+                    <!-- Amount (Mandatory) -->
+                    <StackPanel>
+                        <TextBlock Text="Amount *" Foreground="Red" FontSize="12"/>
+                        <TextBox x:Name="TxtAmount" CornerRadius="8" Height="40"/>
+                    </StackPanel>
 
-                    <DatePicker x:Name="DpQuoteDate"
-                                Header="Quote Date"/>
+                    <!-- Quote Date (Mandatory) -->
+                    <StackPanel>
+                        <TextBlock Text="Quote Date *" Foreground="Red" FontSize="12"/>
+                        <CalendarDatePicker x:Name="DpQuoteDate" Height="40"/>
+                    </StackPanel>
 
-                    <DatePicker x:Name="DpValidTill"
-                                Header="Valid Till"/>
+                    <!-- Valid Till (Mandatory) -->
+                    <StackPanel>
+                        <TextBlock Text="Valid Till *" Foreground="Red" FontSize="12"/>
+                        <CalendarDatePicker x:Name="DpValidTill" Height="40"/>
+                    </StackPanel>
 
-                    <ComboBox x:Name="CmbQuoteStatus"
-                              PlaceholderText="Status">
-                        <ComboBoxItem Content="Draft"/>
-                        <ComboBoxItem Content="Sent"/>
-                        <ComboBoxItem Content="Approved"/>
-                        <ComboBoxItem Content="Rejected"/>
-                    </ComboBox>
+                    <!-- Status (Optional) -->
+                    <StackPanel>
+                        <TextBlock Text="Status" Foreground="#64748B" FontSize="12"/>
+                        <ComboBox x:Name="CmbQuoteStatus" Height="40">
+                            <ComboBoxItem Content="Draft"/>
+                            <ComboBoxItem Content="Sent"/>
+                            <ComboBoxItem Content="Approved"/>
+                            <ComboBoxItem Content="Rejected"/>
+                        </ComboBox>
+                    </StackPanel>
 
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Right"
-                                Spacing="12">
-                        <Button x:Name="BtnCancelModal"
-                                Content="Cancel"/>
-                        <Button x:Name="BtnGenerateQuote"
-                                Content="Generate Quote"
-                                Background="#16A34A"
-                                Foreground="White"/>
+                    <!-- Action Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+                        <Button x:Name="BtnCancelModal" Content="Cancel"/>
+                        <Button x:Name="BtnSaveQuote" Content="Save Quote" Background="#2563EB" Foreground="White"/>
                     </StackPanel>
 
                 </StackPanel>
             </Border>
         </Grid>
+
 
     </Grid>
 </Page>

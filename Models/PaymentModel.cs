@@ -19,8 +19,9 @@ namespace App_3.Models
 
 
 
-        public string DateFormatted => Date.ToString("dd/MM/yyyy");
-        public string AmountFormatted => $"₹ {Amount}";
-
+        // For XAML binding (WinUI 3)
+        public string FormattedAmount => $"₹ {Amount:N0}";
+        public string FormattedDate => Date.ToString("dd MMM yyyy");
     }
+
 }

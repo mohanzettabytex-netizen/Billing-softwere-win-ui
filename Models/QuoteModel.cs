@@ -29,5 +29,6 @@ namespace App_3.Models
 
         // Status: Draft / Sent / Approved / Rejected
         public string Status { get; set; }
+        public string Description { get; set; }
     }
 }
