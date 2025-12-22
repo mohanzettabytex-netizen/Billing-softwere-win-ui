@@ -2,8 +2,10 @@
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using System;
 using System.Collections.Generic;
-using Windows.UI;
+using System.Threading.Tasks;
 
 namespace App_3.Views
 {
@@ -24,43 +26,43 @@ namespace App_3.Views
                 new ItemModel
                 {
                     Name = "Rice Bag",
+                    Type = "Product",
                     SKU = "ITM-001",
-                    SalePrice = "₹1200",
-                    PurchasePrice = "₹1000",
+                    SalePrice = "1200",
+                    PurchasePrice = "1000",
                     StockQty = 3,
                     Unit = "Kg",
                     Status = "Low Stock",
-                    StockColor = Colors.Orange,
-                    StatusColor = Color.FromArgb(255, 254, 226, 226),
-                    StatusTextColor = Colors.Orange,
+                    StatusColor = new SolidColorBrush(Colors.Orange),
+                    StatusTextColor = new SolidColorBrush(Colors.Black),
                     ImagePath = "Assets/rice_bag.png"
                 },
                 new ItemModel
                 {
                     Name = "Sugar",
+                    Type = "Service",
                     SKU = "ITM-002",
-                    SalePrice = "₹500",
-                    PurchasePrice = "₹400",
+                    SalePrice = "500",
+                    PurchasePrice = "400",
                     StockQty = 12,
                     Unit = "Kg",
                     Status = "In Stock",
-                    StockColor = Colors.Green,
-                    StatusColor = Color.FromArgb(255, 220, 252, 231),
-                    StatusTextColor = Colors.Green,
+                    StatusColor = new SolidColorBrush(Colors.LightGreen),
+                    StatusTextColor = new SolidColorBrush(Colors.Black),
                     ImagePath = "Assets/sugar.png"
                 },
                 new ItemModel
                 {
                     Name = "Oil Bottle",
+                    Type = "Product",
                     SKU = "ITM-003",
-                    SalePrice = "₹250",
-                    PurchasePrice = "₹200",
+                    SalePrice = "250",
+                    PurchasePrice = "200",
                     StockQty = 0,
-                    Unit = "ltr",
+                    Unit = "Ltr",
                     Status = "Out of Stock",
-                    StockColor = Colors.Red,
-                    StatusColor = Color.FromArgb(255, 254, 226, 226),
-                    StatusTextColor = Colors.Red,
+                    StatusColor = new SolidColorBrush(Colors.LightCoral),
+                    StatusTextColor = new SolidColorBrush(Colors.Black),
                     ImagePath = "Assets/oil_bottle.png"
                 }
             };
@@ -69,6 +71,7 @@ namespace App_3.Views
         }
 
         // ================= POPUPS =================
+
         private void OpenAddItemPopup(object sender, RoutedEventArgs e)
         {
             AddItemOverlay.Visibility = Visibility.Visible;
@@ -81,7 +84,6 @@ namespace App_3.Views
 
         private void SaveNewItem(object sender, RoutedEventArgs e)
         {
-            // Dummy: Just close popup
             AddItemOverlay.Visibility = Visibility.Collapsed;
         }
 
@@ -97,33 +99,47 @@ namespace App_3.Views
 
         private void UpdateItem(object sender, RoutedEventArgs e)
         {
-            // Dummy: Just close popup
             EditItemOverlay.Visibility = Visibility.Collapsed;
         }
 
-        // ================= BULK IMPORT / EXPORT =================
-        private void ImportItems(object sender, RoutedEventArgs e)
+        // ================= ADD ITEM TYPE =================
+        private void AddItemType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Dummy: just show message
+            if (sender is ComboBox comboBox &&
+                comboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                bool isProduct = selectedItem.Content.ToString() == "Product";
+
+                AddItemStock.Visibility = isProduct ? Visibility.Visible : Visibility.Collapsed;
+                AddItemUnit.Visibility = isProduct ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        // ================= BULK IMPORT / EXPORT =================
+        private async void ImportItems(object sender, RoutedEventArgs e)
+        {
             ContentDialog dialog = new ContentDialog
             {
                 Title = "Import Items",
-                Content = "Bulk import (CSV/Excel) is dummy for now.",
-                CloseButtonText = "OK"
+                Content = "Bulk import (CSV / Excel) – dummy for now.",
+                CloseButtonText = "OK",
+                XamlRoot = this.XamlRoot
             };
-            _ = dialog.ShowAsync();
+
+            await dialog.ShowAsync();
         }
 
-        private void ExportItems(object sender, RoutedEventArgs e)
+        private async void ExportItems(object sender, RoutedEventArgs e)
         {
-            // Dummy: just show message
             ContentDialog dialog = new ContentDialog
             {
                 Title = "Export Items",
-                Content = "Bulk export (CSV/Excel) is dummy for now.",
-                CloseButtonText = "OK"
+                Content = "Bulk export (CSV / Excel) – dummy for now.",
+                CloseButtonText = "OK",
+                XamlRoot = this.XamlRoot
             };
-            _ = dialog.ShowAsync();
+
+            await dialog.ShowAsync();
         }
     }
 }

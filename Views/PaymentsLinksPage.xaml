@@ -89,10 +89,14 @@
              Height="40"
              Padding="36,0,12,0"
              CornerRadius="8"/>
-                        <TextBlock Text="🔍"
-           FontSize="16"
-           Margin="12,0,0,0"
-           VerticalAlignment="Center"/>
+                        <SymbolIcon Symbol="Find"
+Foreground="#64748B"
+Width="18"
+Height="18"
+Margin="12,0,0,0"
+VerticalAlignment="Center"
+HorizontalAlignment="Left"
+IsHitTestVisible="False"/>
                     </Grid>
 
                     <!-- Status Filter -->

@@ -23,9 +23,9 @@ namespace App_3.Views
         {
             Payments = new ObservableCollection<PaymentModel>
             {
-                new PaymentModel { PaymentID=1, Customer="Alice", Amount=5000, Mode="Cash", Status="Paid", Date=DateTime.Today },
-                new PaymentModel { PaymentID=2, Customer="Bob", Amount=2500, Mode="Card", Status="Pending", Date=DateTime.Today },
-                new PaymentModel { PaymentID=3, Customer="Charlie", Amount=3000, Mode="Online", Status="Paid", Date=DateTime.Today }
+                new PaymentModel { PaymentId = "PAY-001", Customer="Alice", Amount=5000, Mode="Cash", Status="Paid", Date=DateTime.Today },
+                new PaymentModel { PaymentId = "PAY-001", Customer="Bob", Amount=2500, Mode="Card", Status="Pending", Date=DateTime.Today },
+                new PaymentModel {PaymentId = "PAY-001", Customer="Charlie", Amount=3000, Mode="Online", Status="Paid", Date=DateTime.Today }
             };
         }
 
@@ -40,16 +40,7 @@ namespace App_3.Views
 
         private void ToggleEmptyState()
         {
-            if (Payments.Count == 0)
-            {
-                EmptyStatePanel.Visibility = Visibility.Visible;
-                TablePanel.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                EmptyStatePanel.Visibility = Visibility.Collapsed;
-                TablePanel.Visibility = Visibility.Visible;
-            }
+            
         }
 
         private void OpenAddPaymentModal(object sender, RoutedEventArgs e)

@@ -8,7 +8,7 @@ namespace App_3.Models
 {
     public class PaymentModel
     {
-        public int PaymentID { get; set; }
+        public string PaymentId { get; set; }
         public string Customer { get; set; }
         public string InvoiceNumber { get; set; }
         public decimal Amount { get; set; }
