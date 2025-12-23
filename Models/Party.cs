@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Media;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,15 @@ namespace App_3.Models
     public class Party
     {
         public string Name { get; set; }
-        public string Location { get; set; }
         public string Phone { get; set; }
-        public string Email { get; set; }
-        public string TotalPurchase { get; set; }
-        public string StockStatus { get; set; }
-        public string StockStatusColor { get; set; }
-        public string Initial { get; set; }
+        public string Balance { get; set; }
+        public string Status { get; set; }
+        public SolidColorBrush StatusColor { get; set; }
+
+        // Details
+        public string Type { get; set; } // Customer / Supplier
+        public string Outstanding { get; set; }
+        public string TotalSales { get; set; }
+        public SolidColorBrush BalanceColor { get; set; }
     }
 }

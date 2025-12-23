@@ -9,200 +9,443 @@
 
     <Grid Padding="16">
 
+        <!-- ================= MAIN SCROLLABLE CONTENT ================= -->
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Spacing="20">
 
-                <!-- HEADER -->
-                <Grid>
+                <!-- ================= PAGE HEADER ================= -->
+                <Grid Padding="8">
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Parties" FontSize="28" FontWeight="Bold" Foreground="#0F172A"/>
-                        <TextBlock Text="Manage Customers &amp; Suppliers quickly" FontSize="13" Foreground="#64748B" Margin="0,6,0,0"/>
+                    <!-- LEFT : TITLE -->
+                    <StackPanel>
+                        <TextBlock Text="Parties"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   Foreground="#0F172A"/>
+
+                        <TextBlock Text="Manage customers and suppliers"
+                   FontSize="13"
+                   Foreground="#64748B"
+                   Margin="0,4,0,0"/>
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Spacing="8">
-                        <Button Content="+ Add Customer" Background="#4C6FFF" Foreground="White" Padding="12,6" MinWidth="120" CornerRadius="8" Click="OpenCustomerPopup_Click"/>
-                        <Button Content="+ Add Supplier" Background="#0B6EFF" Foreground="White" Padding="12,6" MinWidth="120" CornerRadius="8" Click="OpenSupplierPopup_Click"/>
-                        <!-- EXPORT -->
-                        <Button Content="Export CSV" Background="#10B981" Foreground="White" Padding="12,6" MinWidth="100" CornerRadius="8"/>
+                    <!-- RIGHT : ACTIONS -->
+                    <StackPanel Grid.Column="1"
+                Orientation="Horizontal"
+                Spacing="10"
+                VerticalAlignment="Center">
+
+                        <!-- Export -->
+                        <Button Content="Export CSV"
+                Background="#F1F5F9"
+                Foreground="#0F172A"
+                Padding="12,6"
+                CornerRadius="8"/>
+
+                        <!-- Add Customer -->
+                        <Button Content="+ Add Customer"
+                Background="#4C6FFF"
+                Foreground="White"
+                Padding="14,6"
+                CornerRadius="8"
+                Click="OpenCustomerPopup_Click"/>
+
+                        <!-- Add Supplier -->
+                        <Button Content="+ Add Supplier"
+                Background="#EEF2FF"
+                Foreground="#1E3A8A"
+                Padding="14,6"
+                CornerRadius="8"
+                Click="OpenSupplierPopup_Click"/>
+
                     </StackPanel>
                 </Grid>
 
-                <!-- TOGGLE -->
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <Button x:Name="CustomerToggle" Content="Customer" Background="#4C6FFF" Foreground="White" MinWidth="80" CornerRadius="8" Padding="8,4" Click="CustomerToggle_Click"/>
-                    <Button x:Name="SupplierToggle" Content="Supplier" MinWidth="80" CornerRadius="8" Padding="8,4" Click="SupplierToggle_Click"/>
-                </StackPanel>
 
-                <!-- METRICS ROW -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Spacing="12" Margin="0,0,0,10">
-                    <Border CornerRadius="12" Background="White" Padding="12" MinWidth="180">
-                        <StackPanel>
-                            <TextBlock Text="Total Parties" Foreground="#334155"/>
-                            <TextBlock x:Name="TotalPartiesText" Text="1,248" FontSize="22" FontWeight="Bold"/>
-                            <TextBlock Text="+18 today" FontSize="11" Foreground="#10B981"/>
-                        </StackPanel>
-                    </Border>
+                <!-- ================= CUSTOMER / SUPPLIER TOGGLE ================= -->
+                <Border Background="#E5E7EB"
+        CornerRadius="10"
+        Padding="2"
+        HorizontalAlignment="Left">
 
-                    <Border CornerRadius="12" Background="White" Padding="12" MinWidth="180">
-                        <StackPanel>
-                            <TextBlock Text="Active" Foreground="#334155"/>
-                            <TextBlock x:Name="ActiveText" Text="1,100" FontSize="22" FontWeight="Bold"/>
-                            <TextBlock Text="+12 today" FontSize="11" Foreground="#10B981"/>
-                        </StackPanel>
-                    </Border>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Border CornerRadius="12" Background="White" Padding="12" MinWidth="180">
-                        <StackPanel>
-                            <TextBlock Text="Inactive" Foreground="#334155"/>
-                            <TextBlock x:Name="InactiveText" Text="148" FontSize="22" FontWeight="Bold"/>
-                            <TextBlock Text="—" FontSize="11" Foreground="#6B7280"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
+                        <!-- CUSTOMER -->
+                        <Button x:Name="CustomerToggle"
+                Grid.Column="0"
+                Content="Customer"
+                Height="32"
+                Background="#4C6FFF"
+                Foreground="White"
+                FontWeight="SemiBold"
+                CornerRadius="8"
+                BorderThickness="0"
+                Click="CustomerToggle_Click"/>
 
-                <controls:WrapPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+                        <!-- SUPPLIER -->
+                        <Button x:Name="SupplierToggle"
+                Grid.Column="1"
+                Content="Supplier"
+                Height="32"
+                Background="Transparent"
+                Foreground="#334155"
+                FontWeight="SemiBold"
+                CornerRadius="8"
+                BorderThickness="0"
+                Click="SupplierToggle_Click"/>
 
-                    <!-- Search Box -->
-                    <Grid Width="260" Margin="0,0,8,8">
-                        <TextBox x:Name="SearchBox" PlaceholderText="Search by name, phone or email…" Padding="36,6,10,6" CornerRadius="6"/>
-                        <SymbolIcon Symbol="Find" Foreground="#64748B" Width="16" Height="16" Margin="12,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" IsHitTestVisible="False"/>
                     </Grid>
-
-                    <!-- Status Filter -->
-                    <ComboBox x:Name="StatusFilter" Width="120" MinWidth="80" Margin="0,0,8,8">
-                        <ComboBoxItem Content="All" IsSelected="True"/>
-                        <ComboBoxItem Content="Active"/>
-                        <ComboBoxItem Content="Inactive"/>
-                    </ComboBox>
-
-                    <!-- Sort Filter -->
-                    <ComboBox Width="120" MinWidth="80" Margin="0,0,8,8">
-                        <ComboBoxItem Content="Newest" IsSelected="True"/>
-                        <ComboBoxItem Content="Oldest"/>
-                    </ComboBox>
-
-                    <!-- Reset Button -->
-                    <Button Content="Reset" MinWidth="64" CornerRadius="8" Margin="0,0,8,8"/>
-                </controls:WrapPanel>
+                </Border>
 
 
-                <!-- MAIN CONTENT -->
-                <Grid ColumnSpacing="16">
+                <!-- ================= METRICS ROW ================= -->
+                <Grid ColumnSpacing="12"
+      RowSpacing="12"
+      HorizontalAlignment="Stretch">
+
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- LEFT TABLE -->
-                    <Border CornerRadius="12" Background="White" Padding="12" MinWidth="300">
-                        <StackPanel>
-                            <!-- Header -->
-                            <Grid Margin="0,0,0,6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="120"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="Customer Name" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="1" Text="Phone" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="2" Text="Email" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="3" Text="Total Purchase" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="4" Text="Status / Actions" HorizontalAlignment="Right" FontWeight="SemiBold"/>
-                            </Grid>
-
-                            <!-- Scrollable List -->
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="350">
-                                <ItemsControl x:Name="PartiesItemsControl">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate x:DataType="models:Party">
-                                            <Border CornerRadius="6" Padding="8" Background="White" BorderBrush="#E0E0E0" BorderThickness="1" Margin="0,4">
-                                                <Grid ColumnSpacing="8">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="2*"/>
-                                                        <ColumnDefinition Width="1*"/>
-                                                        <ColumnDefinition Width="2*"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="120"/>
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <!-- Optional Profile Image -->
-                                                    <!--<Image Source="{x:Bind ProfileImage}" Width="32" Height="32" Grid.Column="0"/>-->
-
-                                                    <TextBlock Grid.Column="0" Text="{x:Bind Name}" VerticalAlignment="Center"/>
-                                                    <TextBlock Grid.Column="1" Text="{x:Bind Phone}" VerticalAlignment="Center"/>
-                                                    <TextBlock Grid.Column="2" Text="{x:Bind Email}" VerticalAlignment="Center"/>
-                                                    <TextBlock Grid.Column="3" Text="{x:Bind TotalPurchase}" VerticalAlignment="Center"/>
-
-                                                    <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="4">
-                                                        <Border Background="{x:Bind StockStatusColor}" CornerRadius="4" Padding="2,0">
-                                                            <TextBlock Text="{x:Bind StockStatus}" Foreground="White" FontSize="12"/>
-                                                        </Border>
-                                                        <Button Content="Edit" Width="50" CornerRadius="4" Padding="4,2"/>
-                                                        <Button Content="Delete" Width="50" Background="#EF4444" Foreground="White" CornerRadius="4" Padding="4,2"/>
-                                                    </StackPanel>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </ScrollViewer>
-
-                            <!-- PAGINATION PLACEHOLDER -->
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8" Margin="0,8,0,0">
-                                <Button Content="« Prev" Width="80" CornerRadius="6"/>
-                                <TextBlock Text="Page 1 of 10" VerticalAlignment="Center"/>
-                                <Button Content="Next »" Width="80" CornerRadius="6"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- RIGHT PANEL -->
-                    <Border Grid.Column="1" CornerRadius="12" Padding="12" Background="White" MinHeight="200">
-                        <StackPanel>
-                            <TextBlock Text="Quick Actions" FontWeight="SemiBold"/>
-                            <Button Content="Create Invoice" Background="#4C6FFF" Foreground="White" CornerRadius="8" Margin="0,4"/>
-                            <Button Content="Send Reminder" CornerRadius="8" Margin="0,4"/>
-                            <Button Content="Export CSV" CornerRadius="8" Margin="0,4"/>
-                            <TextBlock Text="Filters" FontWeight="SemiBold" Margin="0,8,0,4"/>
-                            <StackPanel Orientation="Horizontal" Spacing="8">
-                                <Button Content="All" Width="72" CornerRadius="8"/>
-                                <Button Content="Active" Width="72" CornerRadius="8"/>
-                                <Button Content="Inactive" Width="72" CornerRadius="8"/>
-                            </StackPanel>
-                            <TextBlock Text="Party Preview" FontWeight="SemiBold" Margin="0,0,0,6"/>
-                            <StackPanel Background="#F0F0F0" Padding="8" CornerRadius="8">
-                                <TextBlock Text="Select a party to preview details" Foreground="#64748B"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-            </StackPanel>
-        </ScrollViewer>
-        <!-- ================= ADD PARTY POPUP ================= -->
-        <Grid x:Name="AddPartyOverlay"
-      Background="#66000000"
-      Visibility="Collapsed"
-      HorizontalAlignment="Stretch"
-      VerticalAlignment="Stretch"
-      IsHitTestVisible="True">
-
-            <Border Width="520"
-            MaxHeight="700"
+                    <!-- TOTAL PARTIES -->
+                    <Border Grid.Column="0"
             Background="White"
             CornerRadius="12"
-            Padding="20"
+            Padding="16"
+            MinHeight="96">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Total Parties"
+                       FontSize="12"
+                       Foreground="#64748B"/>
+
+                            <TextBlock x:Name="TotalPartiesText"
+                       Text="1,248"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="#0F172A"/>
+
+                            <TextBlock Text="+18 today"
+                       FontSize="11"
+                       Foreground="#10B981"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ACTIVE -->
+                    <Border Grid.Column="1"
+            Background="White"
+            CornerRadius="12"
+            Padding="16"
+            MinHeight="96">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Active"
+                       FontSize="12"
+                       Foreground="#64748B"/>
+
+                            <TextBlock x:Name="ActiveText"
+                       Text="1,100"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="#0F172A"/>
+
+                            <TextBlock Text="+12 today"
+                       FontSize="11"
+                       Foreground="#10B981"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- INACTIVE -->
+                    <Border Grid.Column="2"
+            Background="White"
+            CornerRadius="12"
+            Padding="16"
+            MinHeight="96">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Inactive"
+                       FontSize="12"
+                       Foreground="#64748B"/>
+
+                            <TextBlock x:Name="InactiveText"
+                       Text="148"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="#0F172A"/>
+
+                            <TextBlock Text="—"
+                       FontSize="11"
+                       Foreground="#94A3B8"/>
+                        </StackPanel>
+                    </Border>
+
+                </Grid>
+
+
+                <!-- ================= SEARCH + FILTER ================= -->
+                <Border Background="White" CornerRadius="12" Padding="12">
+                    <Grid x:Name="SearchFilterPanel" MaxWidth="760" HorizontalAlignment="Left" VerticalAlignment="Center" ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <!-- Search Box -->
+                            <ColumnDefinition Width="1*"/>
+                            <!-- Status Filter -->
+                            <ColumnDefinition Width="1*"/>
+                            <!-- Sort Filter -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Reset Button -->
+                        </Grid.ColumnDefinitions>
+
+                        <!-- SEARCH BOX -->
+                        <Grid MinWidth="200" MaxWidth="300" Grid.Column="0">
+                            <TextBox x:Name="SearchBox"
+                     PlaceholderText="Search by name, phone or email…"
+                     Padding="36,10,12,10"
+                     CornerRadius="8"
+                     FontSize="14"
+                     Height="40"/>
+                            <SymbolIcon Symbol="Find"
+                        Foreground="#64748B"
+                        Width="18"
+                        Height="18"
+                        Margin="12,0,0,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        IsHitTestVisible="False"/>
+                        </Grid>
+
+                        <!-- STATUS FILTER -->
+                        <ComboBox x:Name="StatusFilter"
+                  Width="160"
+                  Height="40"
+                  CornerRadius="8"
+                  FontSize="14"
+                  Grid.Column="1">
+                            <ComboBoxItem Content="All" IsSelected="True"/>
+                            <ComboBoxItem Content="Active"/>
+                            <ComboBoxItem Content="Inactive"/>
+                        </ComboBox>
+
+                        <!-- SORT FILTER -->
+                        <ComboBox x:Name="SortFilter"
+                  Width="160"
+                  Height="40"
+                  CornerRadius="8"
+                  FontSize="14"
+                  Grid.Column="2">
+                            <ComboBoxItem Content="Newest" IsSelected="True"/>
+                            <ComboBoxItem Content="Oldest"/>
+                        </ComboBox>
+
+                        <!-- RESET BUTTON -->
+                        <Button Content="Reset"
+                Width="Auto"
+                MinWidth="64"
+                Height="40"
+                CornerRadius="8"
+                Grid.Column="3"/>
+                    </Grid>
+                </Border>
+
+
+                <!-- ================= LEFT + RIGHT GRID ================= -->
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="360"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <!-- ================= LEFT SIDE ================= -->
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <!-- Table Header -->
+                            <RowDefinition Height="*"/>
+                            <!-- List -->
+                        </Grid.RowDefinitions>
+
+                        <!-- TABLE HEADER -->
+                        <Grid Padding="12,8" Background="#F1F5F9">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <!-- Party Name -->
+                                <ColumnDefinition Width="2*"/>
+                                <!-- Phone -->
+                                <ColumnDefinition Width="2*"/>
+                                <!-- Balance -->
+                                <ColumnDefinition Width="1.5*"/>
+                                <!-- Status -->
+                                <ColumnDefinition Width="48"/>
+                                <!-- Actions -->
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Party Name" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <TextBlock Text="Phone" Grid.Column="1" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <TextBlock Text="Balance" Grid.Column="2" FontWeight="SemiBold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <TextBlock Text="Status" Grid.Column="3" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- LIST + EMPTY OVERLAY -->
+                        <Grid Grid.Row="1">
+
+                            <!-- PARTIES LIST -->
+                            <ListView x:Name="PartiesList"
+                  SelectionMode="Single"
+                  IsItemClickEnabled="True"
+                  SelectionChanged="PartiesList_SelectionChanged"
+                  Margin="0">
+
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Padding="12,8" ColumnSpacing="8">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1.5*"/>
+                                                <ColumnDefinition Width="48"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Party Name -->
+                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                                            <!-- Phone -->
+                                            <TextBlock Text="{Binding Phone}" Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                                            <!-- Balance -->
+                                            <TextBlock Text="{Binding Balance}" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+                                            <!-- Status -->
+                                            <Border Grid.Column="3"
+                                Background="{Binding StatusColor}"
+                                CornerRadius="10"
+                                Padding="6,2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Status}" Foreground="White" FontSize="12"/>
+                                            </Border>
+
+                                            <!-- Actions -->
+                                            <Button Grid.Column="4"
+                                Content="⋮"
+                                Width="36"
+                                Height="28"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                                <Button.Flyout>
+                                                    <MenuFlyout>
+                                                        <MenuFlyoutItem Text="Edit Party"/>
+                                                        <MenuFlyoutItem Text="View Ledger"/>
+                                                        <MenuFlyoutItem Text="Delete" Foreground="Red"/>
+                                                    </MenuFlyout>
+                                                </Button.Flyout>
+                                            </Button>
+
+                                            <!-- Divider -->
+                                            <Border Grid.ColumnSpan="5"
+                                BorderBrush="#E5E7EB"
+                                BorderThickness="0,0,0,1"
+                                VerticalAlignment="Bottom"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+                            <!-- EMPTY STATE OVERLAY -->
+                            <Grid x:Name="EmptyStatePanel" Visibility="{x:Bind IsPartiesEmpty, Mode=OneWay}">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
+
+                                    <Image Source="Assets/empty_state.png" Width="120" Height="120"/>
+
+                                    <TextBlock Text="No parties yet" FontSize="16" FontWeight="SemiBold" Foreground="#64748B" TextAlignment="Center"/>
+                                    <TextBlock Text="Add your first customer to get started" FontSize="12" Foreground="#94A3B8" TextAlignment="Center"/>
+
+                                    <Button Content="Add Customer" Width="140" Background="#4C6FFF" Foreground="White" CornerRadius="8" Click="OpenCustomerPopup_Click"/>
+                                </StackPanel>
+                            </Grid>
+
+                        </Grid>
+                    </Grid>
+
+
+                    <!-- ================= RIGHT SIDE : PARTY DETAILS ================= -->
+                    <Border Grid.Column="1" Background="White" CornerRadius="12" Padding="16">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Spacing="16">
+
+                                <!-- Party Header Card -->
+                                <Border Background="#F8FAFC" CornerRadius="10" Padding="12">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding SelectedParty.Name}" FontSize="18" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                        <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,4,0,0">
+                                            <Border Background="#DBEAFE" CornerRadius="8" Padding="6,2">
+                                                <TextBlock Text="{Binding SelectedParty.Type}" FontSize="12"/>
+                                            </Border>
+                                            <Border Background="{Binding SelectedParty.StatusColor}" CornerRadius="8" Padding="6,2">
+                                                <TextBlock Text="{Binding SelectedParty.Status}" FontSize="12" Foreground="White"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Financial Summary Card -->
+                                <Border Background="#F0F9FF" CornerRadius="10" Padding="12">
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="Outstanding Balance" Foreground="#64748B"/>
+                                        <TextBlock Text="{Binding SelectedParty.Outstanding}" FontSize="22" FontWeight="Bold" Foreground="{Binding SelectedParty.BalanceColor}"/>
+                                        <TextBlock Text="Total Sales: ₹{Binding SelectedParty.TotalSales}" FontSize="12" Foreground="#475569"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Quick Actions -->
+                                <StackPanel Spacing="8">
+                                    <Button Content="Create Invoice" Background="#4C6FFF" Foreground="White" CornerRadius="8"/>
+                                    <Button Content="Receive Payment" Background="#E0E7FF" CornerRadius="8"/>
+                                    <Button Content="View Ledger" Background="#E0E7FF" CornerRadius="8"/>
+                                </StackPanel>
+
+                                <!-- Recent Activity -->
+                                <StackPanel>
+                                    <TextBlock Text="Recent Activity" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Last Invoice: 12 Aug 2025" FontSize="12" Foreground="#64748B"/>
+                                    <TextBlock Text="Last Payment: ₹4,500" FontSize="12" Foreground="#64748B"/>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ================= ADD PARTY POPUP ================= -->
+        <Grid x:Name="AddPartyOverlay"
+      Background="#80000000"
+      Visibility="Collapsed"
+      HorizontalAlignment="Stretch"
+      VerticalAlignment="Stretch">
+
+            <Border Width="480"
+            MaxHeight="720"
+            Background="White"
+            CornerRadius="16"
+            Padding="24"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Spacing="12">
+                    <StackPanel Spacing="16">
 
                         <!-- HEADER -->
                         <Grid>
@@ -213,125 +456,175 @@
 
                             <TextBlock x:Name="PopupTitle"
                                Text="Add Party"
-                               FontSize="22"
-                               FontWeight="SemiBold"/>
+                               FontSize="18"
+                               FontWeight="Bold"/>
 
                             <Button Content="✕"
                             Grid.Column="1"
-                            Width="34"
-                            Height="34"
-                            CornerRadius="6"
+                            Width="32"
+                            Height="32"
+                            CornerRadius="8"
                             Click="CloseAddParty_Click"/>
                         </Grid>
 
-                        <!-- BASIC DETAILS -->
+                        <!-- ================= BASIC DETAILS ================= -->
                         <TextBlock Text="Basic Details"
                            FontWeight="SemiBold"
-                           FontSize="14"
-                           Margin="0,8,0,4"/>
+                           FontSize="14"/>
 
-                        <StackPanel Spacing="8">
-                            <StackPanel>
-                                <TextBlock Text="Name *" Foreground="Red" FontSize="12"/>
-                                <TextBox x:Name="PartyNameBox"
-                                 PlaceholderText="Enter name"
-                                 CornerRadius="6"/>
-                            </StackPanel>
-
-                            <StackPanel>
-                                <TextBlock Text="Phone" FontSize="12"/>
-                                <TextBox x:Name="PhoneBox"
-                                 PlaceholderText="Phone (Optional)"
-                                 CornerRadius="6"/>
-                            </StackPanel>
-
-                            <StackPanel>
-                                <TextBlock Text="Email" FontSize="12"/>
-                                <TextBox x:Name="EmailBox"
-                                 PlaceholderText="Email (Optional)"
-                                 CornerRadius="6"/>
-                            </StackPanel>
-
-                            <StackPanel>
-                                <TextBlock Text="Billing Address *" Foreground="Red" FontSize="12"/>
-                                <TextBox x:Name="BillingAddressBox"
-                                 PlaceholderText="Enter billing address"
-                                 AcceptsReturn="True"
-                                 Height="90"
-                                 CornerRadius="6"/>
-                            </StackPanel>
-
-                            <TextBox x:Name="GSTBox"
-                             PlaceholderText="GST Number (Optional)"
-                             CornerRadius="6"/>
-
-                            <TextBox x:Name="OpeningBalanceBox"
-                             PlaceholderText="Opening Balance (Optional)"
-                             CornerRadius="6"/>
+                        <!-- NAME -->
+                        <StackPanel>
+                            <TextBlock Text="Name *"
+                               Foreground="Red"
+                               FontSize="12"
+                               Margin="0,0,0,4"/>
+                            <TextBox x:Name="PartyNameBox"
+                             Height="40"
+                             CornerRadius="8"
+                             PlaceholderText="Enter customer / supplier name"/>
                         </StackPanel>
 
-                        <!-- BANK DETAILS (Supplier) -->
+                        <!-- PHONE -->
+                        <StackPanel>
+                            <TextBlock Text="Phone"
+                               FontSize="12"
+                               Foreground="#64748B"
+                               Margin="0,0,0,4"/>
+                            <TextBox x:Name="PhoneBox"
+                             Height="40"
+                             CornerRadius="8"
+                             InputScope="TelephoneNumber"
+                             PlaceholderText="Phone (optional)"/>
+                        </StackPanel>
+
+                        <!-- EMAIL -->
+                        <StackPanel>
+                            <TextBlock Text="Email"
+                               FontSize="12"
+                               Foreground="#64748B"
+                               Margin="0,0,0,4"/>
+                            <TextBox x:Name="EmailBox"
+                             Height="40"
+                             CornerRadius="8"
+                             PlaceholderText="Email (optional)"/>
+                        </StackPanel>
+
+                        <!-- ADDRESS -->
+                        <StackPanel>
+                            <TextBlock Text="Billing Address *"
+                               Foreground="Red"
+                               FontSize="12"
+                               Margin="0,0,0,4"/>
+                            <TextBox x:Name="BillingAddressBox"
+                             Height="90"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             CornerRadius="8"
+                             PlaceholderText="Enter billing address"/>
+                        </StackPanel>
+
+                        <!-- ================= FINANCIAL DETAILS ================= -->
+                        <TextBlock Text="Financial Details (Optional)"
+                           FontWeight="SemiBold"
+                           FontSize="14"
+                           Margin="0,8,0,0"/>
+
+                        <!-- GST -->
+                        <StackPanel>
+                            <TextBlock Text="GST Number"
+                               FontSize="12"
+                               Foreground="#64748B"
+                               Margin="0,0,0,4"/>
+                            <TextBox x:Name="GSTBox"
+                             Height="40"
+                             CornerRadius="8"
+                             PlaceholderText="GSTIN (optional)"/>
+                        </StackPanel>
+
+                        <!-- OPENING BALANCE -->
+                        <StackPanel>
+                            <TextBlock Text="Opening Balance"
+                               FontSize="12"
+                               Foreground="#64748B"
+                               Margin="0,0,0,4"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="₹"
+                                   VerticalAlignment="Center"
+                                   Margin="8,0,4,0"
+                                   Foreground="#475569"/>
+
+                                <TextBox x:Name="OpeningBalanceBox"
+                                 Grid.Column="1"
+                                 Height="40"
+                                 CornerRadius="8"
+                                 InputScope="Number"
+                                 PlaceholderText="0.00"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- ================= BANK DETAILS (SUPPLIER) ================= -->
                         <StackPanel x:Name="BankSection"
-                            Spacing="8"
-                            Margin="0,8,0,0"
-                            Visibility="Collapsed">
+                            Visibility="Collapsed"
+                            Spacing="12"
+                            Margin="0,8,0,0">
 
                             <TextBlock Text="Bank Details (Supplier)"
                                FontWeight="SemiBold"
-                               FontSize="14"
-                               Margin="0,0,0,4"/>
+                               FontSize="14"/>
 
-                            <StackPanel>
-                                <TextBlock Text="Bank Name *" Foreground="Red" FontSize="12"/>
-                                <TextBox x:Name="BankNameBox"
-                                 PlaceholderText="Enter bank name"
-                                 CornerRadius="6"/>
-                            </StackPanel>
+                            <TextBox x:Name="BankNameBox"
+                             Height="40"
+                             CornerRadius="8"
+                             PlaceholderText="Bank Name *"/>
 
-                            <StackPanel>
-                                <TextBlock Text="Account Number *" Foreground="Red" FontSize="12"/>
-                                <TextBox x:Name="AccountNumberBox"
-                                 PlaceholderText="Enter account number"
-                                 CornerRadius="6"/>
-                            </StackPanel>
+                            <TextBox x:Name="AccountNumberBox"
+                             Height="40"
+                             CornerRadius="8"
+                             InputScope="Number"
+                             PlaceholderText="Account Number *"/>
 
-                            <StackPanel>
-                                <TextBlock Text="IFSC Code *" Foreground="Red" FontSize="12"/>
-                                <TextBox x:Name="IFSCBox"
-                                 PlaceholderText="Enter IFSC code"
-                                 CornerRadius="6"/>
-                            </StackPanel>
+                            <TextBox x:Name="IFSCBox"
+                             Height="40"
+                             CornerRadius="8"
+                             PlaceholderText="IFSC Code *"/>
 
                             <TextBox x:Name="UPIBox"
-                             PlaceholderText="UPI ID (Optional)"
-                             CornerRadius="6"/>
+                             Height="40"
+                             CornerRadius="8"
+                             PlaceholderText="UPI ID (optional)"/>
 
                             <TextBox x:Name="BranchBox"
-                             PlaceholderText="Branch (Optional)"
-                             CornerRadius="6"/>
+                             Height="40"
+                             CornerRadius="8"
+                             PlaceholderText="Branch (optional)"/>
                         </StackPanel>
 
-                        <!-- ACTION BUTTONS -->
+                        <!-- ================= ACTIONS ================= -->
                         <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
-                            Spacing="8"
-                            Margin="0,12,0,0">
+                            Spacing="12"
+                            Margin="0,16,0,0">
 
                             <Button Content="Cancel"
-                            CornerRadius="8"
-                            Padding="12,6"
+                            Width="100"
                             Click="CloseAddParty_Click"/>
 
-                            <Button Content="Save"
-                            Background="#4C6FFF"
-                            Foreground="White"
-                            CornerRadius="8"
-                            Padding="12,6"/>
+                            <Button Content="Save Party"
+                            Width="140"
+                            Background="#2563EB"
+                            Foreground="White"/>
                         </StackPanel>
 
                     </StackPanel>
                 </ScrollViewer>
             </Border>
         </Grid>
+
+
     </Grid>
 </Page>
