@@ -7,11 +7,58 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     Background="#F5F7FA">
 
-    <Grid Padding="16">
+    <Grid>
+
+        <!-- ================= EMPTY STATE ================= -->
+        <Grid x:Name="EmptyState"
+      Visibility="Visible"
+      HorizontalAlignment="Stretch"
+      VerticalAlignment="Stretch"
+      Background="#F5F7FA">
+
+
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="420"
+                        Spacing="18">
+
+                <Border Width="96" Height="96"
+                        CornerRadius="24"
+                        Background="#E0F2FE"
+                        HorizontalAlignment="Center">
+                    <SymbolIcon Symbol="Contact"
+                                Width="40"
+                                Height="40"
+                                Foreground="#0284C7"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                </Border>
+
+                <TextBlock Text="No parties added yet"
+                           FontSize="22"
+                           FontWeight="SemiBold"
+                           TextAlignment="Center"/>
+
+                <TextBlock Text="Add customers or suppliers to manage invoices and payments"
+                           FontSize="14"
+                           Foreground="#64748B"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap"/>
+
+                <Button Content="+ Add Party"
+                        Height="48"
+                        FontSize="16"
+                        CornerRadius="12"
+                        Background="#0284C7"
+                        Foreground="White"
+                        Click="EmptyStateAddParty_Click"/>
+            </StackPanel>
+        </Grid>
 
         <!-- ================= MAIN SCROLLABLE CONTENT ================= -->
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Spacing="20">
+        <ScrollViewer x:Name="MainContent"
+              Visibility="Collapsed">
+            <StackPanel Padding="24" Spacing="16">
 
                 <!-- ================= PAGE HEADER ================= -->
                 <Grid Padding="8">
@@ -301,7 +348,6 @@
                             <ListView x:Name="PartiesList"
                   SelectionMode="Single"
                   IsItemClickEnabled="True"
-                  SelectionChanged="PartiesList_SelectionChanged"
                   Margin="0">
 
                                 <ListView.ItemTemplate>
@@ -359,19 +405,6 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-
-                            <!-- EMPTY STATE OVERLAY -->
-                            <Grid x:Name="EmptyStatePanel" Visibility="{x:Bind IsPartiesEmpty, Mode=OneWay}">
-                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
-
-                                    <Image Source="Assets/empty_state.png" Width="120" Height="120"/>
-
-                                    <TextBlock Text="No parties yet" FontSize="16" FontWeight="SemiBold" Foreground="#64748B" TextAlignment="Center"/>
-                                    <TextBlock Text="Add your first customer to get started" FontSize="12" Foreground="#94A3B8" TextAlignment="Center"/>
-
-                                    <Button Content="Add Customer" Width="140" Background="#4C6FFF" Foreground="White" CornerRadius="8" Click="OpenCustomerPopup_Click"/>
-                                </StackPanel>
-                            </Grid>
 
                         </Grid>
                     </Grid>

@@ -6,8 +6,52 @@
 
     <Grid>
 
-        <!-- MAIN CONTENT -->
-        <ScrollViewer>
+        <!-- ================= EMPTY STATE (FULL PAGE) ================= -->
+        <Grid x:Name="EmptyState"
+              Background="#F3F4F6"
+              Visibility="Visible">
+
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="20"
+                        Width="420">
+
+                <Border Width="96" Height="96"
+                        CornerRadius="24"
+                        Background="#E0E7FF"
+                        HorizontalAlignment="Center">
+                    <SymbolIcon Symbol="Shop"
+                                Foreground="#2563EB"
+                                Width="40"
+                                Height="40"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                </Border>
+
+                <TextBlock Text="No items added yet"
+                           FontSize="22"
+                           FontWeight="SemiBold"
+                           TextAlignment="Center"/>
+
+                <TextBlock Text="Create products or services to start billing your customers"
+                           FontSize="14"
+                           Foreground="#64748B"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap"/>
+
+                <Button Content="+ Add Your First Item"
+                        Height="48"
+                        FontSize="16"
+                        Background="#2563EB"
+                        Foreground="White"
+                        CornerRadius="12"
+                        Click="EmptyStateAddItem_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <ScrollViewer x:Name="MainContent"
+                      Visibility="Collapsed">
             <StackPanel Padding="24" Spacing="20">
 
                 <!-- HEADER -->
@@ -218,9 +262,16 @@
 
             </StackPanel>
         </ScrollViewer>
-        <!-- ================= ADD ITEM POPUP ================= -->
-        <Grid x:Name="AddItemOverlay" Background="#80000000" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Border Width="450" Background="White" CornerRadius="16" Padding="24" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <!-- ================= ADD ITEM OVERLAY ================= -->
+        <Grid x:Name="AddItemOverlay"
+              Background="#80000000"
+              Visibility="Collapsed">
+            <Border Width="450"
+                    Background="White"
+                    CornerRadius="16"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Spacing="16">
 
@@ -270,9 +321,16 @@
             </Border>
         </Grid>
 
-        <!-- ================= EDIT ITEM POPUP ================= -->
-        <Grid x:Name="EditItemOverlay" Background="#80000000" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Border Width="450" Background="White" CornerRadius="16" Padding="24" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <!-- ================= EDIT ITEM OVERLAY ================= -->
+        <Grid x:Name="EditItemOverlay"
+              Background="#80000000"
+              Visibility="Collapsed">
+            <Border Width="450"
+                    Background="White"
+                    CornerRadius="16"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Spacing="16">
 
@@ -322,6 +380,5 @@
                 </ScrollViewer>
             </Border>
         </Grid>
-
     </Grid>
 </Page>

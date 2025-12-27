@@ -5,23 +5,29 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace App_3.Views
 {
     public sealed partial class ItemsPage : Page
     {
-        private List<ItemModel> dummyItems;
+        private List<ItemModel> items;
 
         public ItemsPage()
         {
             this.InitializeComponent();
-            LoadDummyItems();
+            LoadItems();
+            UpdatePageState();
         }
 
-        private void LoadDummyItems()
+        // ================= LOAD ITEMS =================
+        private void LoadItems()
         {
-            dummyItems = new List<ItemModel>
+            // 👉 FIRST TIME : EMPTY LIST (Vyapar behaviour)
+            items = new List<ItemModel>();
+
+            // 👉 Uncomment this later to test "data exists" state
+            /*
+            items = new List<ItemModel>
             {
                 new ItemModel
                 {
@@ -36,42 +42,40 @@ namespace App_3.Views
                     StatusColor = new SolidColorBrush(Colors.Orange),
                     StatusTextColor = new SolidColorBrush(Colors.Black),
                     ImagePath = "Assets/rice_bag.png"
-                },
-                new ItemModel
-                {
-                    Name = "Sugar",
-                    Type = "Service",
-                    SKU = "ITM-002",
-                    SalePrice = "500",
-                    PurchasePrice = "400",
-                    StockQty = 12,
-                    Unit = "Kg",
-                    Status = "In Stock",
-                    StatusColor = new SolidColorBrush(Colors.LightGreen),
-                    StatusTextColor = new SolidColorBrush(Colors.Black),
-                    ImagePath = "Assets/sugar.png"
-                },
-                new ItemModel
-                {
-                    Name = "Oil Bottle",
-                    Type = "Product",
-                    SKU = "ITM-003",
-                    SalePrice = "250",
-                    PurchasePrice = "200",
-                    StockQty = 0,
-                    Unit = "Ltr",
-                    Status = "Out of Stock",
-                    StatusColor = new SolidColorBrush(Colors.LightCoral),
-                    StatusTextColor = new SolidColorBrush(Colors.Black),
-                    ImagePath = "Assets/oil_bottle.png"
                 }
             };
+            */
 
-            ItemsList.ItemsSource = dummyItems;
+            ItemsList.ItemsSource = items;
+            
         }
 
-        // ================= POPUPS =================
+        // ================= PAGE STATE (IMPORTANT) =================
+        private void UpdatePageState()
+        {
+            if (items == null || items.Count == 0)
+            {
+                EmptyState.Visibility = Visibility.Visible;
+                MainContent.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                EmptyState.Visibility = Visibility.Collapsed;
+                MainContent.Visibility = Visibility.Visible;
+            }
+        }
 
+
+        // ================= EMPTY STATE BUTTON =================
+        private void EmptyStateAddItem_Click(object sender, RoutedEventArgs e)
+        {
+            EmptyState.Visibility = Visibility.Collapsed;
+            MainContent.Visibility = Visibility.Visible;
+            AddItemOverlay.Visibility = Visibility.Visible;
+        }
+
+
+        // ================= ADD ITEM =================
         private void OpenAddItemPopup(object sender, RoutedEventArgs e)
         {
             AddItemOverlay.Visibility = Visibility.Visible;
@@ -84,9 +88,31 @@ namespace App_3.Views
 
         private void SaveNewItem(object sender, RoutedEventArgs e)
         {
+            // Dummy add (simulate save)
+            items.Add(new ItemModel
+            {
+                Name = AddItemName.Text,
+                Type = "Product",
+                SKU = "NEW-001",
+                SalePrice = "0",
+                PurchasePrice = "0",
+                StockQty = 0,
+                Unit = "pcs",
+                Status = "In Stock",
+                StatusColor = new SolidColorBrush(Colors.LightGreen),
+                StatusTextColor = new SolidColorBrush(Colors.Black)
+            });
+
+            ItemsList.ItemsSource = null;
+            ItemsList.ItemsSource = items;
+
             AddItemOverlay.Visibility = Visibility.Collapsed;
+
+            // 🔥 MOST IMPORTANT
+            UpdatePageState();
         }
 
+        // ================= EDIT ITEM =================
         private void EditItem_Click(object sender, RoutedEventArgs e)
         {
             EditItemOverlay.Visibility = Visibility.Visible;
@@ -102,7 +128,7 @@ namespace App_3.Views
             EditItemOverlay.Visibility = Visibility.Collapsed;
         }
 
-        // ================= ADD ITEM TYPE =================
+        // ================= TYPE SELECTION =================
         private void AddItemType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox comboBox &&
@@ -115,13 +141,13 @@ namespace App_3.Views
             }
         }
 
-        // ================= BULK IMPORT / EXPORT =================
+        // ================= IMPORT / EXPORT =================
         private async void ImportItems(object sender, RoutedEventArgs e)
         {
             ContentDialog dialog = new ContentDialog
             {
                 Title = "Import Items",
-                Content = "Bulk import (CSV / Excel) – dummy for now.",
+                Content = "Bulk import coming soon.",
                 CloseButtonText = "OK",
                 XamlRoot = this.XamlRoot
             };
@@ -134,7 +160,7 @@ namespace App_3.Views
             ContentDialog dialog = new ContentDialog
             {
                 Title = "Export Items",
-                Content = "Bulk export (CSV / Excel) – dummy for now.",
+                Content = "Bulk export coming soon.",
                 CloseButtonText = "OK",
                 XamlRoot = this.XamlRoot
             };

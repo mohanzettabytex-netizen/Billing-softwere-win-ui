@@ -9,13 +9,41 @@ namespace App_3.Views
 {
     public sealed partial class PartiesPage : Page
     {
-        public ObservableCollection<Party> Parties { get; set; } = new ObservableCollection<Party>();
+        public ObservableCollection<Party> Parties { get; set; }
 
         public PartiesPage()
         {
             this.InitializeComponent();
 
-            // Dummy Data
+            Parties = new ObservableCollection<Party>();
+
+            //  Uncomment this ONLY if you want dummy data
+            LoadDummyData();
+
+            PartiesList.ItemsSource = Parties;
+
+            UpdatePageState();
+        }
+
+        // ================= PAGE STATE =================
+        private void UpdatePageState()
+        {
+            if (Parties.Count == 0)
+            {
+                EmptyState.Visibility = Visibility.Visible;
+                MainContent.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                EmptyState.Visibility = Visibility.Collapsed;
+                MainContent.Visibility = Visibility.Visible;
+            }
+        }
+
+        // ================= DUMMY DATA =================
+        private void LoadDummyData()
+        {
+            /*
             Parties.Add(new Party
             {
                 Name = "John Doe",
@@ -41,25 +69,18 @@ namespace App_3.Views
                 TotalSales = "₹20,000",
                 BalanceColor = new SolidColorBrush(Colors.Red)
             });
-
-            Parties.Add(new Party
-            {
-                Name = "Jane Smith",
-                Phone = "9123456780",
-                Balance = "₹8,750",
-                Status = "Active",
-                StatusColor = new SolidColorBrush(Colors.Green),
-                Type = "Customer",
-                Outstanding = "₹8,750",
-                TotalSales = "₹35,000",
-                BalanceColor = new SolidColorBrush(Colors.Red)
-            });
-
-            // Bind dummy data to ListView
-            PartiesList.ItemsSource = Parties;
+            */
         }
 
-        #region Toggle Buttons (UI only)
+        // ================= EMPTY STATE BUTTON =================
+        private void EmptyStateAddParty_Click(object sender, RoutedEventArgs e)
+        {
+            EmptyState.Visibility = Visibility.Collapsed;
+            MainContent.Visibility = Visibility.Visible;
+            AddPartyOverlay.Visibility = Visibility.Visible;
+        }
+
+        // ================= TOGGLES =================
         private void CustomerToggle_Click(object sender, RoutedEventArgs e)
         {
             CustomerToggle.Background = new SolidColorBrush(Colors.Blue);
@@ -81,9 +102,8 @@ namespace App_3.Views
 
             BankSection.Visibility = Visibility.Visible;
         }
-        #endregion
 
-        #region Add Party Popup
+        // ================= ADD PARTY =================
         private void OpenCustomerPopup_Click(object sender, RoutedEventArgs e)
         {
             AddPartyOverlay.Visibility = Visibility.Visible;
@@ -105,19 +125,25 @@ namespace App_3.Views
 
         private void SaveParty_Click(object sender, RoutedEventArgs e)
         {
-            // Dummy save - just close popup
+            // Dummy save
+            Parties.Add(new Party
+            {
+                Name = "New Party",
+                Phone = "9000000000",
+                Balance = "₹0",
+                Status = "Active",
+                StatusColor = new SolidColorBrush(Colors.Green),
+                Type = "Customer",
+                Outstanding = "₹0",
+                TotalSales = "₹0",
+                BalanceColor = new SolidColorBrush(Colors.Green)
+            });
+
             CloseAddParty_Click(sender, e);
+            UpdatePageState();
         }
-        #endregion
 
-        #region ListView Selection Dummy Binding
-        private void PartiesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           
-        }
-        #endregion
-
-        #region Edit/Delete Dummy
+        // ================= EDIT / DELETE =================
         private void EditParty_Click(object sender, RoutedEventArgs e)
         {
             OpenCustomerPopup_Click(sender, e);
@@ -125,16 +151,10 @@ namespace App_3.Views
 
         private void DeleteParty_Click(object sender, RoutedEventArgs e)
         {
-            // Dummy delete - UI only
-        }
-        #endregion
-        public bool IsPartiesEmpty => Parties == null || Parties.Count == 0;
+            if (Parties.Count > 0)
+                Parties.RemoveAt(0);
 
-        // Whenever Parties list changes
-        private void UpdateEmptyState()
-        {
-            EmptyStatePanel.Visibility = IsPartiesEmpty ? Visibility.Visible : Visibility.Collapsed;
+            UpdatePageState();
         }
     }
 }
-

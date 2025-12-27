@@ -4,313 +4,359 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Background="#F3F4F6">
 
+    <!-- ROOT -->
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <!-- ================= EMPTY STATE (INVOICE – FULL PAGE) ================= -->
+        <Grid x:Name="EmptyState"
+      Background="#F3F4F6"
+      Visibility="Visible">
 
-        <!-- ===================== SCROLLABLE CONTENT ===================== -->
-        <ScrollViewer>
-            <StackPanel Padding="24" Spacing="24">
+            <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="20"
+                Width="420">
 
-                <!-- ================= HEADER ================= -->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <!-- ICON BOX -->
+                <Border Width="96"
+                Height="96"
+                CornerRadius="24"
+                Background="#E0E7FF"
+                HorizontalAlignment="Center">
 
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Spacing="12">
-                            <TextBlock Text="Invoice"
-                                       FontSize="30"
-                                       FontWeight="Bold"/>
-
-                            <!-- STATUS CHIP -->
-                            <Border x:Name="StatusChip"
-                                    Background="#FEF3C7"
-                                    CornerRadius="12"
-                                    Padding="10,4">
-                                <TextBlock x:Name="StatusText"
-                                           Text="DRAFT"
-                                           FontWeight="SemiBold"
-                                           Foreground="#92400E"/>
-                            </Border>
-                        </StackPanel>
-
-                        <TextBlock Text="Create and manage invoices"
-                                   Foreground="#64748B"
-                                   FontSize="13"/>
-                    </StackPanel>
-
-                    <!-- GRAND TOTAL -->
-                    <Border Grid.Column="1"
-                            Background="#ECFDF5"
-                            CornerRadius="14"
-                            Padding="18,12">
-                        <TextBlock x:Name="GrandTotalText_Summary"
-                                   Text="₹ 0"
-                                   FontSize="26"
-                                   FontWeight="Bold"
-                                   Foreground="#047857"/>
-                    </Border>
-                </Grid>
-
-                <!-- ================= INVOICE INFO ================= -->
-                <Border Background="White"
-                        CornerRadius="16"
-                        Padding="24">
-                    <Grid ColumnSpacing="20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.2*"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="1.5*"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Invoice No -->
-                        <StackPanel>
-                            <TextBlock Text="Invoice No" FontWeight="SemiBold"/>
-                            <TextBox x:Name="InvoiceNoBox" Height="40" IsReadOnly="True"/>
-                        </StackPanel>
-
-                        <!-- Invoice Date -->
-                        <StackPanel Grid.Column="1">
-                            <TextBlock Text="Invoice Date" FontWeight="SemiBold"/>
-                            <CalendarDatePicker x:Name="InvoiceDatePicker" Height="40"/>
-                        </StackPanel>
-
-                        <!-- Customer -->
-                        <StackPanel Grid.Column="2">
-                            <TextBlock Text="Customer" FontWeight="SemiBold"/>
-                            <ComboBox x:Name="CustomerComboBox" Height="40"/>
-                        </StackPanel>
-
-                        <!-- Mobile -->
-                        <StackPanel Grid.Column="3">
-                            <TextBlock Text="Mobile" FontWeight="SemiBold"/>
-                            <TextBox x:Name="MobileTextBox" Height="40"/>
-                        </StackPanel>
-                    </Grid>
+                    <SymbolIcon Symbol="Document"
+                        Foreground="#2563EB"
+                        Width="40"
+                        Height="40"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
                 </Border>
 
-                <!-- ================= ADD ITEM ================= -->
-                <Border Background="White"
-        CornerRadius="16"
-        Padding="20"
-        Margin="0,0,0,16">
-                    <Grid ColumnSpacing="12">
+                <!-- TITLE -->
+                <TextBlock Text="No invoices created yet"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   TextAlignment="Center"/>
+
+                <!-- SUBTITLE -->
+                <TextBlock Text="Create your first invoice to start billing your customers"
+                   FontSize="14"
+                   Foreground="#64748B"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap"/>
+
+                <!-- ACTION BUTTON -->
+                <Button Content="+ Create Your First Invoice"
+                Height="48"
+                FontSize="16"
+                Background="#2563EB"
+                Foreground="White"
+                CornerRadius="12"
+                Click="EmptyStateAdd_Click"/>
+            </StackPanel>
+        </Grid>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <Grid x:Name="MainContent"
+              Visibility="Collapsed">
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- ================= SCROLL CONTENT ================= -->
+            <ScrollViewer Grid.Row="0">
+                <StackPanel Padding="24"
+                            Spacing="24">
+
+                    <!-- ================= HEADER ================= -->
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <!-- Item -->
-                            <ColumnDefinition Width="*"/>
-                            <!-- Qty -->
-                            <ColumnDefinition Width="*"/>
-                            <!-- Price -->
-                            <ColumnDefinition Width="*"/>
-                            <!-- Discount -->
+                            <ColumnDefinition/>
                             <ColumnDefinition Width="Auto"/>
-                            <!-- Button -->
                         </Grid.ColumnDefinitions>
 
-                        <!-- ITEM SELECT -->
                         <StackPanel>
-                            <TextBlock Text="Item" FontSize="12" Margin="0,0,0,4"/>
-                            <ComboBox x:Name="ItemSelect" PlaceholderText="Select Item" Height="40"/>
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="12">
+
+                                <TextBlock Text="Invoice"
+                                           FontSize="30"
+                                           FontWeight="Bold"/>
+
+                                <Border Background="#FEF3C7"
+                                        CornerRadius="12"
+                                        Padding="10,4">
+                                    <TextBlock Text="DRAFT"
+                                               Foreground="#92400E"
+                                               FontWeight="SemiBold"/>
+                                </Border>
+                            </StackPanel>
+
+                            <TextBlock Text="Create and manage invoices"
+                                       Foreground="#64748B"
+                                       FontSize="13"/>
                         </StackPanel>
 
-                        <!-- QUANTITY -->
-                        <StackPanel Grid.Column="1">
-                            <TextBlock Text="Qty" FontSize="12" Margin="0,0,0,4"/>
-                            <NumberBox x:Name="QtyBox" Value="1" Height="40"/>
-                        </StackPanel>
-
-                        <!-- PRICE -->
-                        <StackPanel Grid.Column="2">
-                            <TextBlock Text="Price" FontSize="12" Margin="0,0,0,4"/>
-                            <NumberBox x:Name="PriceBox"  Height="40"/>
-                        </StackPanel>
-
-                        <!-- DISCOUNT -->
-                        <StackPanel Grid.Column="3">
-                            <TextBlock Text="Discount" FontSize="12" Margin="0,0,0,4"/>
-                            <NumberBox x:Name="DiscountBox"  Height="40"/>
-                        </StackPanel>
-
-                        <!-- ADD BUTTON -->
-                        <StackPanel Grid.Column="4" VerticalAlignment="Bottom">
-                            <Button x:Name="AddItemButton"
-                    Content="Add"
-                    Height="40"
-                    MinWidth="80"
-                    Padding="10,0"
-                    Background="#2563EB"
-                    Foreground="White"
-                    CornerRadius="10"
-                    Click="AddItem_Click"/>
-                        </StackPanel>
+                        <Border Grid.Column="1"
+                                Background="#ECFDF5"
+                                CornerRadius="14"
+                                Padding="18,12">
+                            <TextBlock x:Name="GrandTotalText"
+                                       Text="₹ 0.00"
+                                       FontSize="26"
+                                       FontWeight="Bold"
+                                       Foreground="#047857"/>
+                        </Border>
                     </Grid>
-                </Border>
 
-
-                <!-- ================= ITEMS TABLE ================= -->
-                <Border Background="White"
-                        CornerRadius="16"
-                        Padding="16">
-                    <StackPanel Spacing="12">
-
-                        <!-- Header -->
-                        <Grid Background="#F3F4F6" Padding="8">
+                    <!-- ================= INVOICE INFO ================= -->
+                    <Border Background="White"
+                            CornerRadius="16"
+                            Padding="24">
+                        <Grid ColumnSpacing="20">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1.2*"/>
                                 <ColumnDefinition/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Text="Invoice No"
+                                           FontWeight="SemiBold"/>
+                                <TextBox x:Name="InvoiceNoBox"
+                                         Height="40"
+                                         IsReadOnly="True"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Invoice Date"
+                                           FontWeight="SemiBold"/>
+                                <CalendarDatePicker x:Name="InvoiceDatePicker"
+                                                    Height="40"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Customer"
+                                           FontWeight="SemiBold"/>
+                                <ComboBox x:Name="CustomerComboBox"
+                                          Height="40"
+                                          PlaceholderText="Select customer"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="3">
+                                <TextBlock Text="Mobile"
+                                           FontWeight="SemiBold"/>
+                                <TextBox x:Name="MobileTextBox"
+                                         Height="40"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- ================= ADD ITEM ================= -->
+                    <Border Background="White"
+                            CornerRadius="16"
+                            Padding="20">
+                        <Grid ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Item" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="1" Text="Qty" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="2" Text="Price" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="3" Text="Discount" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="4" Text="Total" FontWeight="Bold"/>
-                            <TextBlock Grid.Column="5" Text="Remove" FontWeight="Bold"/>
+                            <StackPanel>
+                                <TextBlock Text="Item"
+                                           FontSize="12"/>
+                                <ComboBox x:Name="ItemSelect"
+                                          Height="40"
+                                          PlaceholderText="Select item"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Qty"
+                                           FontSize="12"/>
+                                <NumberBox x:Name="QtyBox"
+                                           Height="40"
+                                           Value="1"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Price"
+                                           FontSize="12"/>
+                                <NumberBox x:Name="PriceBox"
+                                           Height="40"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="3">
+                                <TextBlock Text="Discount"
+                                           FontSize="12"/>
+                                <NumberBox x:Name="DiscountBox"
+                                           Height="40"/>
+                            </StackPanel>
+
+                            <Button Grid.Column="4"
+                                    Content="Add"
+                                    Height="40"
+                                    Padding="20,0"
+                                    Background="#2563EB"
+                                    Foreground="White"
+                                    CornerRadius="10"/>
                         </Grid>
-
-                        <!-- ListView -->
-                        <ListView x:Name="InvoiceItemsList" Height="220">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Padding="6">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="3*"/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <TextBlock Text="{Binding ItemName}"/>
-                                        <NumberBox Grid.Column="1" Value="{Binding Quantity}" Width="60"/>
-                                        <TextBlock Grid.Column="2" Text="{Binding Price}"/>
-                                        <TextBlock Grid.Column="3" Text="{Binding Discount}"/>
-                                        <TextBlock Grid.Column="4" Text="{Binding Total}"/>
-
-
-                                        <Button Grid.Column="5"
-        Content="🗑"
-        Foreground="Red"
-        Background="Transparent"
-        Click="RemoveItem_Click"/>
-
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
-                </Border>
-
-                <!-- ================= SUMMARY + PAYMENT ================= -->
-                <Grid ColumnSpacing="20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <!-- SUMMARY -->
-                    <Border Background="White" CornerRadius="16" Padding="20">
-                        <StackPanel Spacing="10">
-                            <TextBlock Text="Summary" FontWeight="SemiBold" FontSize="16"/>
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Subtotal"/>
-                                <TextBlock x:Name="SubTotalText" Text="₹ 0.00" Grid.Column="1"/>
-                            </Grid>
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="CGST"/>
-                                <TextBlock x:Name="CGSTText" Text="₹ 0.00" Grid.Column="1"/>
-                            </Grid>
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="SGST"/>
-                                <TextBlock x:Name="SGSTText" Text="₹ 0.00" Grid.Column="1"/>
-                            </Grid>
-
-                            <Border Height="1" Background="#E5E7EB" Margin="0,8"/>
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Grand Total" FontWeight="Bold"/>
-                                <TextBlock x:Name="GrandTotalText" Text="₹ 0.00" Grid.Column="1" FontWeight="Bold"/>
-                            </Grid>
-                        </StackPanel>
                     </Border>
 
-                    <!-- PAYMENT -->
-                    <Border Grid.Column="1" Background="White" CornerRadius="16" Padding="20">
+                    <!-- ================= ITEMS TABLE ================= -->
+                    <Border Background="White"
+                            CornerRadius="16"
+                            Padding="16">
                         <StackPanel Spacing="12">
-                            <ComboBox x:Name="PaymentModeCombo" Header="Payment Mode">
-                                <ComboBoxItem Content="Cash"/>
-                                <ComboBoxItem Content="UPI"/>
-                                <ComboBoxItem Content="Card"/>
-                            </ComboBox>
 
-                            <CalendarDatePicker x:Name="PaymentDatePicker" Header="Payment Date"/>
-                            <TextBox x:Name="PaymentRefTextBox" Header="Reference ID"/>
-                            <NumberBox x:Name="PaidAmountBox" Header="Paid Amount" Value="0"/>
+                            <Grid Background="#F3F4F6"
+                                  Padding="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Border Background="#FEE2E2"
-                                    Padding="10"
-                                    CornerRadius="10">
-                                <TextBlock x:Name="DueAmountText"
-                                           Text="DUE : ₹ 0"
-                                           FontWeight="Bold"
-                                           Foreground="#DC2626"
-                                           HorizontalAlignment="Right"/>
-                            </Border>
+                                <TextBlock Text="Item" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="Qty" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="2" Text="Price" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="3" Text="Discount" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="4" Text="Total" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="5" Text="Remove" FontWeight="Bold"/>
+                            </Grid>
+
+                            <ListView x:Name="InvoiceItemsList"
+                                      Height="200"/>
+
+                            <TextBlock Text="No items added yet"
+                                       Foreground="#9CA3AF"
+                                       HorizontalAlignment="Center"
+                                       Padding="12"/>
                         </StackPanel>
                     </Border>
-                </Grid>
-            </StackPanel>
-        </ScrollViewer>
 
-        <!-- ================= ACTION BAR ================= -->
-        <Border Grid.Row="1"
-                Background="White"
-                Padding="14"
-                BorderThickness="1"
-                BorderBrush="#E5E7EB">
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        Spacing="12">
+                    <!-- ================= SUMMARY + PAYMENT ================= -->
+                    <Grid ColumnSpacing="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
-                <Button Content="Print" Height="40"/>
-                <Button Content="Share" Height="40"/>
-                <Button Content="Save Invoice"
-                        Height="40"
-                        Background="#2563EB"
-                        Foreground="White"
-                        CornerRadius="10"/>
-            </StackPanel>
-        </Border>
+                        <Border Background="White"
+                                CornerRadius="16"
+                                Padding="20">
+                            <StackPanel Spacing="10">
+
+                                <TextBlock Text="Summary"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Subtotal"/>
+                                    <TextBlock x:Name="SubTotalText"
+                                               Text="₹ 0.00"
+                                               Grid.Column="1"/>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="CGST"/>
+                                    <TextBlock x:Name="CGSTText"
+                                               Text="₹ 0.00"
+                                               Grid.Column="1"/>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="SGST"/>
+                                    <TextBlock x:Name="SGSTText"
+                                               Text="₹ 0.00"
+                                               Grid.Column="1"/>
+                                </Grid>
+
+                                <Border Height="1"
+                                        Background="#E5E7EB"
+                                        Margin="0,8"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Grand Total"
+                                               FontWeight="Bold"/>
+                                    <TextBlock x:Name="GrandTotalTextBottom"
+                                               Text="₹ 0.00"
+                                               FontWeight="Bold"
+                                               Grid.Column="1"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Column="1"
+                                Background="White"
+                                CornerRadius="16"
+                                Padding="20">
+                            <StackPanel Spacing="12">
+
+                                <ComboBox Header="Payment Mode"/>
+                                <CalendarDatePicker Header="Payment Date"/>
+                                <TextBox Header="Reference ID"/>
+                                <NumberBox x:Name="PaidAmountBox"
+                                           Header="Paid Amount"
+                                           Value="0"/>
+
+                                <Border Background="#FEE2E2"
+                                        Padding="10"
+                                        CornerRadius="10">
+                                    <TextBlock x:Name="DueAmountText"
+                                               Text="DUE : ₹ 0.00"
+                                               Foreground="#DC2626"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Right"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- ================= ACTION BAR ================= -->
+            <Border Grid.Row="1"
+                    Background="White"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="1"
+                    Padding="14">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Spacing="12">
+                    <Button Content="Print" Height="40"/>
+                    <Button Content="Share" Height="40"/>
+                    <Button Content="Save Invoice"
+                            Height="40"
+                            Background="#2563EB"
+                            Foreground="White"
+                            CornerRadius="10"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Page>

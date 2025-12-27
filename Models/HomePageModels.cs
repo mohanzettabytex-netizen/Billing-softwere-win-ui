@@ -16,14 +16,15 @@ namespace App_3.Models
     {
         public string ItemName { get; set; }       // Product A
         public int QuantitySold { get; set; }      // 45
-        public string StockStatus { get; set; }    // In Stock / Low / Out
+        public string RevenueFormatted { get; set; } // "₹4,500"
     }
-
     // ================= ALERT =================
     public class AlertModel
     {
         public string Type { get; set; }        // Payment / Stock / Reminder
         public string Message { get; set; }     // Alert text
-        public string Timestamp { get; set; }   // Today 10:30 AM
+        public string Timestamp { get; set; }   // "5 mins ago"
+        public string AlertColor { get; set; }  // e.g., "#D1FAE5"
     }
 }
+
