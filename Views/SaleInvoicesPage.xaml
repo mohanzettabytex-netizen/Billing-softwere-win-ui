@@ -1,0 +1,256 @@
+<Page
+    x:Class="App_3.Views.SaleInvoicesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#F5F7FA">
+
+    <!-- ROOT LAYOUT -->
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- TOP APP BAR -->
+            <RowDefinition Height="Auto"/>
+            <!-- PAGE HEADER -->
+            <RowDefinition Height="*"/>
+            <!-- MAIN CONTENT -->
+        </Grid.RowDefinitions>
+
+        <!-- ================================================= -->
+        <!-- TOP APP BAR (Business name + global actions) -->
+        <!-- ================================================= -->
+        <Border Grid.Row="0"
+        Background="#FAFAFA"
+        BorderBrush="#E5E7EB"
+        BorderThickness="0,0,0,1">
+
+            <Grid Padding="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- ================= BUSINESS NAME ================= -->
+                <StackPanel Orientation="Horizontal"
+                    Spacing="8"
+                    VerticalAlignment="Center">
+
+                    <!-- DISPLAY MODE -->
+                    <TextBlock x:Name="BusinessNameText"
+                       Text="• Enter Business Name"
+                       Foreground="#6B7280"
+                       VerticalAlignment="Center"
+                       Tapped="BusinessNameText_Tapped"/>
+
+                    <!-- EDIT MODE -->
+                    <StackPanel x:Name="BusinessNameEditor"
+                        Orientation="Horizontal"
+                        Spacing="6"
+                        Visibility="Collapsed">
+
+                        <TextBox x:Name="BusinessNameBox"
+                         Width="220"
+                         PlaceholderText="Enter Business Name"/>
+
+                        <Button Content="Save"
+                        Padding="12,4"
+                        Background="#2563EB"
+                        Foreground="White"
+                        CornerRadius="12"
+                        Click="SaveBusinessName_Click"/>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <!-- ================= RIGHT ACTIONS ================= -->
+                <StackPanel Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="12">
+
+                    <Button Content="+ Add Sale"
+                    Background="#FEE2E2"
+                    Foreground="#DC2626"
+                    Padding="14,6"
+                    CornerRadius="18"/>
+
+                    <Button Content="+ Add Purchase"
+                    Background="#DBEAFE"
+                    Foreground="#2563EB"
+                    Padding="14,6"
+                    CornerRadius="18"/>
+
+                    <Button Content="+"
+                    Width="36"
+                    Height="36"
+                    CornerRadius="18"/>
+
+                    <FontIcon Glyph="&#xE712;"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+
+
+        <!-- ================================================= -->
+        <!-- PAGE HEADER (Sale Invoices + Add Sale) -->
+        <!-- ================================================= -->
+        <Border Grid.Row="1"
+                Background="White"
+                BorderBrush="#E5E7EB"
+                BorderThickness="0,0,0,1">
+
+            <Grid Padding="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="Sale Invoices"
+                               FontSize="20"
+                               FontWeight="SemiBold"/>
+                    <FontIcon Glyph="&#xE70D;" FontSize="14"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            Spacing="12">
+
+                    <Button Content="+ Add Sale"
+                            Background="#EF4444"
+                            Foreground="White"
+                            Padding="18,6"
+                            CornerRadius="18"/>
+
+                    <FontIcon Glyph="&#xE713;" FontSize="18"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ================================================= -->
+        <!-- MAIN CONTENT -->
+        <!-- ================================================= -->
+        <ScrollViewer Grid.Row="2">
+            <StackPanel Padding="16" Spacing="16">
+
+                <!-- FILTER BAR -->
+                <Border Background="White"
+                        CornerRadius="12"
+                        Padding="14">
+
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <TextBlock Text="Filter by :" VerticalAlignment="Center"/>
+
+                        <Button Content="This Month ▼"
+                                Padding="12,4"
+                                CornerRadius="16"/>
+
+                        <Button Content="📅 01/12/2025  To  31/12/2025"
+                                Padding="12,4"
+                                CornerRadius="16"/>
+
+                        <Button Content="My Company ▼"
+                                Padding="12,4"
+                                CornerRadius="16"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- SUMMARY -->
+                <Border Background="#FBF5FF"
+                        CornerRadius="12"
+                        Padding="16"
+                        Width="420">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Total Sales Amount"
+                                       Foreground="#6B7280"/>
+                            <TextBlock Text="₹ 0"
+                                       FontSize="26"
+                                       FontWeight="Bold"/>
+                            <TextBlock Text="Received: ₹ 0   |   Balance: ₹ 0"
+                                       Foreground="#6B7280"/>
+                        </StackPanel>
+
+                        <Border Grid.Column="1"
+                                Background="#ECFEFF"
+                                CornerRadius="16"
+                                Padding="8,4">
+                            <TextBlock Text="0% ↑"
+                                       Foreground="#0E7490"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- TRANSACTIONS / EMPTY STATE -->
+                <Border Background="White"
+                        CornerRadius="12"
+                        Padding="24"
+                        Height="420">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- TABLE HEADER -->
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Date"/>
+                            <TextBlock Grid.Column="1" Text="Invoice no"/>
+                            <TextBlock Grid.Column="2" Text="Party Name"/>
+                            <TextBlock Grid.Column="3" Text="Transaction"/>
+                            <TextBlock Grid.Column="4" Text="Payment Type"/>
+                            <TextBlock Grid.Column="5" Text="Amount"/>
+                            <TextBlock Grid.Column="6" Text="Balance"/>
+                            <TextBlock Grid.Column="7" Text="Actions"/>
+                        </Grid>
+
+                        <!-- EMPTY STATE -->
+                        <StackPanel Grid.Row="1"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Spacing="12">
+
+                            <Ellipse Width="120" Height="120"
+                                     Fill="#DBEAFE"/>
+
+                            <TextBlock Text="No Transactions to show"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       TextAlignment="Center"/>
+
+                            <TextBlock Text="You haven't added any transactions yet."
+                                       Foreground="#6B7280"
+                                       TextAlignment="Center"/>
+
+                            <Button Content="+ Add Sale"
+                                    Background="#EF4444"
+                                    Foreground="White"
+                                    Padding="20,8"
+                                    CornerRadius="20"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</Page>

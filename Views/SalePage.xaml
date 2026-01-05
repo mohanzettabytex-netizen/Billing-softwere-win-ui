@@ -1,0 +1,195 @@
+<Page
+    x:Class="App_3.Views.SalePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:App_3.ViewModels"
+    xmlns:models="using:App_3.Models"
+    Background="#F3F4F6">
+
+    <Page.DataContext>
+        <vm:SaleViewModel/>
+    </Page.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- ================= TOP BAR ================= -->
+        <Border Background="White" Padding="16">
+            <StackPanel Orientation="Horizontal" Spacing="16">
+                <TextBlock Text="Sale"
+                           FontSize="22"
+                           FontWeight="SemiBold"/>
+                <TextBlock Text="Credit"
+                           Foreground="#2563EB"
+                           FontWeight="SemiBold"/>
+                <ToggleSwitch/>
+                <TextBlock Text="Cash"
+                           FontWeight="SemiBold"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ================= BODY ================= -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Padding="16" Spacing="16">
+
+                <!-- CUSTOMER + META -->
+                <Grid ColumnSpacing="24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- CUSTOMER -->
+                    <ComboBox Header="Customer *"
+                              Height="44"
+                              PlaceholderText="Select customer"/>
+
+                    <TextBox Grid.Column="1"
+                             Header="Phone No."
+                             Height="44"/>
+
+                    <!-- META RIGHT -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Invoice Number"
+                                   Foreground="#6B7280"/>
+                        <TextBlock Text="1"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3">
+                        <TextBlock Text="Invoice Date"
+                                   Foreground="#6B7280"/>
+                        <TextBlock Text="29/12/2025"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- ================= ITEMS TABLE ================= -->
+                <Border Background="White"
+                        BorderBrush="#E5E7EB"
+                        BorderThickness="1"
+                        CornerRadius="8">
+
+                    <StackPanel>
+
+                        <!-- TABLE HEADER -->
+                        <Grid Background="#F8FAFC"
+                              Padding="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>   <!-- # -->
+                                <ColumnDefinition Width="2*"/>  <!-- Item -->
+                                <ColumnDefinition Width="*"/>   <!-- Qty -->
+                                <ColumnDefinition Width="*"/>   <!-- Unit -->
+                                <ColumnDefinition Width="*"/>   <!-- Price -->
+                                <ColumnDefinition Width="*"/>   <!-- Discount -->
+                                <ColumnDefinition Width="*"/>   <!-- Tax -->
+                                <ColumnDefinition Width="*"/>   <!-- Amount -->
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="#"/>
+                            <TextBlock Text="ITEM" Grid.Column="1"/>
+                            <TextBlock Text="QTY" Grid.Column="2"/>
+                            <TextBlock Text="UNIT" Grid.Column="3"/>
+                            <TextBlock Text="PRICE/UNIT" Grid.Column="4"/>
+                            <TextBlock Text="DISCOUNT" Grid.Column="5"/>
+                            <TextBlock Text="TAX" Grid.Column="6"/>
+                            <TextBlock Text="AMOUNT" Grid.Column="7"
+                                       HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <!-- ROWS -->
+                        <ListView ItemsSource="{Binding Items}"
+                                  BorderThickness="0"
+                                  HorizontalContentAlignment="Stretch">
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:SaleItem">
+                                    <Grid Padding="10"
+                                          BorderBrush="#E5E7EB"
+                                          BorderThickness="0,1,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{x:Bind SlNo}"/>
+
+                                        <TextBox Grid.Column="1"
+                                                 PlaceholderText="Item"/>
+
+                                        <TextBox Grid.Column="2"
+                                                 Text="1"/>
+
+                                        <ComboBox Grid.Column="3"
+                                                  PlaceholderText="NONE"/>
+
+                                        <TextBox Grid.Column="4"
+                                                 Text="0"/>
+
+                                        <TextBox Grid.Column="5"
+                                                 Text="0"/>
+
+                                        <ComboBox Grid.Column="6"
+                                                  PlaceholderText="Select"/>
+
+                                        <TextBlock Grid.Column="7"
+                                                   Text="0"
+                                                   HorizontalAlignment="Right"
+                                                   FontWeight="SemiBold"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <!-- ADD ROW -->
+                        <Button Content="ADD ROW"
+                                Margin="10"
+                                HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- DESCRIPTION -->
+                <Button Content="+ Add Description"
+                        HorizontalAlignment="Left"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ================= FOOTER ================= -->
+        <Border Grid.Row="2"
+                Background="White"
+                Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Spacing="16">
+                    <CheckBox Content="Round Off" IsChecked="True"/>
+                    <TextBlock Text="Total"
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="0"
+                               FontWeight="Bold"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            Spacing="12">
+                    <Button Content="Share"/>
+                    <Button Content="Save"
+                            Background="#2563EB"
+                            Foreground="White"
+                            Padding="24,6"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Page>
