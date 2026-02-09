@@ -4,35 +4,74 @@ namespace App_3.Models
 {
     public class SaleItem : INotifyPropertyChanged
     {
-        private string itemName;
-        private decimal qty = 1;
-        private decimal price;
+        private int _qty = 1;
+        private decimal _price;
+        private decimal _discount;
+        private decimal _tax;
+        private string _unit = "NONE";
 
+        public int RowNumber { get; set; }
 
-        public int SlNo { get; set; }
+        public string ItemName { get; set; } = "Select item";
 
-        public string ItemName
+        public string Unit
         {
-            get => itemName;
-            set { itemName = value; OnPropertyChanged(nameof(ItemName)); }
+            get => _unit;
+            set
+            {
+                _unit = value;
+                OnChanged(nameof(Unit));
+            }
         }
 
-        public decimal Qty
+        public int Qty
         {
-            get => qty;
-            set { qty = value; OnPropertyChanged(nameof(Qty)); OnPropertyChanged(nameof(Amount)); }
+            get => _qty;
+            set
+            {
+                _qty = value;
+                OnChanged(nameof(Qty));
+                OnChanged(nameof(Amount));
+            }
         }
 
         public decimal Price
         {
-            get => price;
-            set { price = value; OnPropertyChanged(nameof(Price)); OnPropertyChanged(nameof(Amount)); }
+            get => _price;
+            set
+            {
+                _price = value;
+                OnChanged(nameof(Price));
+                OnChanged(nameof(Amount));
+            }
         }
 
-        public decimal Amount => Qty * Price;
+        public decimal Discount
+        {
+            get => _discount;
+            set
+            {
+                _discount = value;
+                OnChanged(nameof(Discount));
+                OnChanged(nameof(Amount));
+            }
+        }
+
+        public decimal Tax
+        {
+            get => _tax;
+            set
+            {
+                _tax = value;
+                OnChanged(nameof(Tax));
+                OnChanged(nameof(Amount));
+            }
+        }
+
+        public decimal Amount => (Qty * Price) - Discount + Tax;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string prop)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        private void OnChanged(string name) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }

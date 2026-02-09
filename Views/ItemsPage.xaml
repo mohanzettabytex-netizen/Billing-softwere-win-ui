@@ -1064,10 +1064,9 @@
                         Width="24"
                         Height="24"
                         HorizontalAlignment="Center">
-                                    <SymbolIcon Symbol="Filter"
-                                Foreground="#EF4444"
-                                Width="14"
-                                Height="14"/>
+                                    <FontIcon Glyph="&#xE71C;"
+FontFamily="Segoe MDL2 Assets"
+Foreground="#EF4444"/>
                                     <Button.Flyout>
                                         <Flyout Placement="Bottom">
                                             <Border Background="White"
@@ -1381,7 +1380,7 @@
                                             Padding="0"
                                             Width="20"
                                             Height="20">
-                                                        <SymbolIcon Symbol="Filter"
+                                                                          <FontIcon Glyph="&#xE71C;"
                                                     Width="14"
                                                     Foreground="#6B7280"/>
                                                         <Button.Flyout>
@@ -1457,7 +1456,7 @@
                                             Padding="0"
                                             Width="20"
                                             Height="20">
-                                                        <SymbolIcon Symbol="Filter"
+                                                                          <FontIcon Glyph="&#xE71C;"
                                                     Width="14"
                                                     Foreground="#6B7280"/>
                                                         <Button.Flyout>
@@ -1522,7 +1521,7 @@
                                             Padding="0"
                                             Width="20"
                                             Height="20">
-                                                        <SymbolIcon Symbol="Filter"
+                                                                          <FontIcon Glyph="&#xE71C;"
                                                     Width="14"
                                                     Foreground="#6B7280"/>
                                                         <Button.Flyout>
@@ -1591,7 +1590,7 @@
                                             Padding="0"
                                             Width="20"
                                             Height="20">
-                                                        <SymbolIcon Symbol="Filter"
+                                                                          <FontIcon Glyph="&#xE71C;"
                                                     Width="14"
                                                     Foreground="#6B7280"/>
                                                         <Button.Flyout>
@@ -1656,7 +1655,7 @@
                                             Padding="0"
                                             Width="20"
                                             Height="20">
-                                                        <SymbolIcon Symbol="Filter"
+                                                                          <FontIcon Glyph="&#xE71C;"
                                                     Width="14"
                                                     Foreground="#6B7280"/>
                                                         <Button.Flyout>
@@ -1721,7 +1720,7 @@
                                             Padding="0"
                                             Width="20"
                                             Height="20">
-                                                        <SymbolIcon Symbol="Filter"
+                                                                          <FontIcon Glyph="&#xE71C;"
                                                     Width="14"
                                                     Foreground="#6B7280"/>
                                                         <Button.Flyout>
@@ -1786,7 +1785,7 @@
                                             Padding="0"
                                             Width="20"
                                             Height="20">
-                                                        <SymbolIcon Symbol="Filter"
+                                                                          <FontIcon Glyph="&#xE71C;"
                                                     Width="14"
                                                     Foreground="#6B7280"/>
                                                         <Button.Flyout>
@@ -1971,10 +1970,9 @@ Padding="0"
 Width="24"
 Height="24"
 HorizontalAlignment="Center">
-                                        <SymbolIcon Symbol="Filter"
-        Foreground="#EF4444"
-        Width="14"
-        Height="14"/>
+                                        <FontIcon Glyph="&#xE71C;"
+FontFamily="Segoe MDL2 Assets"
+Foreground="#EF4444"/>
                                         <Button.Flyout>
                                             <Flyout Placement="Bottom">
                                                 <Border Background="White"
@@ -2241,7 +2239,7 @@ HorizontalAlignment="Center">
                                                 Padding="0"
                                                 Width="20"
                                                 Height="20">
-                                                            <SymbolIcon Symbol="Filter"
+                                                                              <FontIcon Glyph="&#xE71C;"
                                                         Width="14"
                                                         Foreground="#6B7280"/>
                                                             <Button.Flyout>
@@ -2301,7 +2299,7 @@ HorizontalAlignment="Center">
                                                 Padding="0"
                                                 Width="20"
                                                 Height="20">
-                                                            <SymbolIcon Symbol="Filter"
+                                                                              <FontIcon Glyph="&#xE71C;"
                                                         Width="14"
                                                         Foreground="#6B7280"/>
                                                             <Button.Flyout>
@@ -2359,7 +2357,7 @@ HorizontalAlignment="Center">
                                                 Padding="0"
                                                 Width="20"
                                                 Height="20">
-                                                            <SymbolIcon Symbol="Filter"
+                                                                              <FontIcon Glyph="&#xE71C;"
                                                         Width="14"
                                                         Foreground="#6B7280"/>
                                                             <Button.Flyout>
@@ -2420,7 +2418,7 @@ HorizontalAlignment="Center">
                                                 Padding="0"
                                                 Width="20"
                                                 Height="20">
-                                                            <SymbolIcon Symbol="Filter"
+                                                                              <FontIcon Glyph="&#xE71C;"
                                                         Width="12"
                                                         Foreground="#6B7280"/>
                                                             <Button.Flyout>
@@ -2478,7 +2476,7 @@ HorizontalAlignment="Center">
                                                 Padding="0"
                                                 Width="20"
                                                 Height="20">
-                                                            <SymbolIcon Symbol="Filter"
+                                                                              <FontIcon Glyph="&#xE71C;"
                                                         Width="12"
                                                         Foreground="#6B7280"/>
                                                             <Button.Flyout>
@@ -2536,7 +2534,7 @@ HorizontalAlignment="Center">
                                                 Padding="0"
                                                 Width="20"
                                                 Height="20">
-                                                            <SymbolIcon Symbol="Filter"
+                                                                              <FontIcon Glyph="&#xE71C;"
                                                         Width="12"
                                                         Foreground="#6B7280"/>
                                                             <Button.Flyout>
@@ -2594,7 +2592,7 @@ HorizontalAlignment="Center">
                                                 Padding="0"
                                                 Width="20"
                                                 Height="20">
-                                                            <SymbolIcon Symbol="Filter"
+                                                                              <FontIcon Glyph="&#xE71C;"
                                                         Width="12"
                                                         Foreground="#6B7280"/>
                                                             <Button.Flyout>
@@ -2972,7 +2970,7 @@ HorizontalAlignment="Center">
                                                 Padding="0"
                                                 Width="20"
                                                 Height="20">
-                                                        <SymbolIcon Symbol="Filter"
+                                                                          <FontIcon Glyph="&#xE71C;"
                                                         Width="14"
                                                         Foreground="#6B7280"/>
                                                         <Button.Flyout>
@@ -3037,7 +3035,7 @@ HorizontalAlignment="Center">
                                                 Padding="0"
                                                 Width="20"
                                                 Height="20">
-                                                        <SymbolIcon Symbol="Filter"
+                                                                          <FontIcon Glyph="&#xE71C;"
                                                         Width="14"
                                                         Foreground="#6B7280"/>
                                                         <Button.Flyout>
@@ -3102,7 +3100,7 @@ HorizontalAlignment="Center">
                                                 Padding="0"
                                                 Width="20"
                                                 Height="20">
-                                                        <SymbolIcon Symbol="Filter"
+                                                                          <FontIcon Glyph="&#xE71C;"
                                                         Width="14"
                                                         Foreground="#6B7280"/>
                                                         <Button.Flyout>

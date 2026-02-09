@@ -11,28 +11,31 @@ namespace App_3.ViewModels
 
         public SaleViewModel()
         {
-            Items = new ObservableCollection<SaleItem>
+            Items = new ObservableCollection<SaleItem>();
+
+            // start with one row
+            AddRow();
+        }
+
+        // ✅ METHOD MUST BE OUTSIDE CONSTRUCTOR
+        public void AddRow()
+        {
+            Items.Add(new SaleItem
             {
-                new SaleItem { SlNo = 1 }
-            };
+                RowNumber = Items.Count + 1,
+                ItemName = "Select item",
+                Qty = 1,
+                Unit = "NONE",
+                Price = 0,
+                Discount = 0,
+                Tax = 0
+            });
         }
 
         public decimal Total => Items.Sum(i => i.Amount);
 
         public string TotalText => $"Total : ₹{Total:0.00}";
 
-
-        public void AddRow()
-        {
-            Items.Add(new SaleItem
-            {
-                SlNo = Items.Count + 1
-            });
-            OnPropertyChanged(nameof(Total));
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string prop)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 }

@@ -18,9 +18,9 @@ namespace App_3.ViewModels
                 new SaleInvoiceModel
                 {
                     Date = new DateTime(2025,12,31),
-                    InvoiceNo = 1,
+                    InvoiceNo = "1",
                     PartyName = "Nav",
-                    Transaction = "Sale",
+                    TransactionType = "Sale",
                     PaymentType = "Cash",
                     Amount = 0,
                     Balance = 0

@@ -15,5 +15,8 @@ namespace App_3.Views
         {
             (DataContext as SaleViewModel)?.AddRow();
         }
+
+
+
     }
 }

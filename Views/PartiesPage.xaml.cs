@@ -1,32 +1,32 @@
 ﻿using App_3.Models;
-using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System.Collections.ObjectModel;
+using Windows.UI;
 
-namespace App_3.Views
+namespace App_3.Views    
 {
     public sealed partial class PartiesPage : Page
     {
         public ObservableCollection<Party> Parties { get; set; }
 
+        private SolidColorBrush _activeBrush = new SolidColorBrush(Color.FromArgb(255, 37, 99, 235));
+        private SolidColorBrush _inactiveBrush = new SolidColorBrush(Color.FromArgb(255, 156, 163, 175));
+
         public PartiesPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             Parties = new ObservableCollection<Party>();
 
-            //  Uncomment this ONLY if you want dummy data
-            LoadDummyData();
+            // Ensure initial tab visuals are consistent with XAML (GST active)
+            SetActiveTab("GST");
 
-            PartiesList.ItemsSource = Parties;
-
-            UpdatePageState();
+            UpdateUI();
         }
 
-        // ================= PAGE STATE =================
-        private void UpdatePageState()
+        private void UpdateUI()
         {
             if (Parties.Count == 0)
             {
@@ -37,85 +37,15 @@ namespace App_3.Views
             {
                 EmptyState.Visibility = Visibility.Collapsed;
                 MainContent.Visibility = Visibility.Visible;
+
+                PartiesList.ItemsSource = Parties;
+                PartiesList.SelectedIndex = 0;
             }
         }
 
-        // ================= DUMMY DATA =================
-        private void LoadDummyData()
-        {
-            /*
-            Parties.Add(new Party
-            {
-                Name = "John Doe",
-                Phone = "9876543210",
-                Balance = "₹12,500",
-                Status = "Active",
-                StatusColor = new SolidColorBrush(Colors.Green),
-                Type = "Customer",
-                Outstanding = "₹12,500",
-                TotalSales = "₹50,000",
-                BalanceColor = new SolidColorBrush(Colors.Red)
-            });
-
-            Parties.Add(new Party
-            {
-                Name = "Acme Supplies",
-                Phone = "8765432109",
-                Balance = "₹5,000",
-                Status = "Inactive",
-                StatusColor = new SolidColorBrush(Colors.Gray),
-                Type = "Supplier",
-                Outstanding = "₹5,000",
-                TotalSales = "₹20,000",
-                BalanceColor = new SolidColorBrush(Colors.Red)
-            });
-            */
-        }
-
-        // ================= EMPTY STATE BUTTON =================
-        private void EmptyStateAddParty_Click(object sender, RoutedEventArgs e)
-        {
-            EmptyState.Visibility = Visibility.Collapsed;
-            MainContent.Visibility = Visibility.Visible;
-            AddPartyOverlay.Visibility = Visibility.Visible;
-        }
-
-        // ================= TOGGLES =================
-        private void CustomerToggle_Click(object sender, RoutedEventArgs e)
-        {
-            CustomerToggle.Background = new SolidColorBrush(Colors.Blue);
-            CustomerToggle.Foreground = new SolidColorBrush(Colors.White);
-
-            SupplierToggle.Background = new SolidColorBrush(Colors.LightGray);
-            SupplierToggle.Foreground = new SolidColorBrush(Colors.Black);
-
-            BankSection.Visibility = Visibility.Collapsed;
-        }
-
-        private void SupplierToggle_Click(object sender, RoutedEventArgs e)
-        {
-            SupplierToggle.Background = new SolidColorBrush(Colors.Blue);
-            SupplierToggle.Foreground = new SolidColorBrush(Colors.White);
-
-            CustomerToggle.Background = new SolidColorBrush(Colors.LightGray);
-            CustomerToggle.Foreground = new SolidColorBrush(Colors.Black);
-
-            BankSection.Visibility = Visibility.Visible;
-        }
-
-        // ================= ADD PARTY =================
-        private void OpenCustomerPopup_Click(object sender, RoutedEventArgs e)
+        private void OpenAddParty_Click(object sender, RoutedEventArgs e)
         {
             AddPartyOverlay.Visibility = Visibility.Visible;
-            PopupTitle.Text = "Add Customer";
-            BankSection.Visibility = Visibility.Collapsed;
-        }
-
-        private void OpenSupplierPopup_Click(object sender, RoutedEventArgs e)
-        {
-            AddPartyOverlay.Visibility = Visibility.Visible;
-            PopupTitle.Text = "Add Supplier";
-            BankSection.Visibility = Visibility.Visible;
         }
 
         private void CloseAddParty_Click(object sender, RoutedEventArgs e)
@@ -123,38 +53,70 @@ namespace App_3.Views
             AddPartyOverlay.Visibility = Visibility.Collapsed;
         }
 
-        private void SaveParty_Click(object sender, RoutedEventArgs e)
+        private void GSTTab_Tapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            // Dummy save
+            SetActiveTab("GST");
+        }
+
+        private void CreditTab_Tapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            SetActiveTab("Credit");
+        }
+
+        private void AdditionalTab_Tapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            SetActiveTab("Additional");
+        }
+
+        private void SetActiveTab(string tab)
+        {
+            // Reset all content
+            GSTContent.Visibility = Visibility.Collapsed;
+            CreditContent.Visibility = Visibility.Collapsed;
+            AdditionalContent.Visibility = Visibility.Collapsed;
+
+            // Reset visuals
+            GSTTab.BorderBrush = null;
+            CreditTab.BorderBrush = null;
+            AdditionalTab.BorderBrush = null;
+
+            GSTTabText.Foreground = _inactiveBrush;
+            CreditTabText.Foreground = _inactiveBrush;
+            AdditionalTabText.Foreground = _inactiveBrush;
+
+            // Activate selected
+            switch (tab)
+            {
+                case "GST":
+                    GSTContent.Visibility = Visibility.Visible;
+                    GSTTab.BorderBrush = _activeBrush;
+                    GSTTabText.Foreground = _activeBrush;
+                    break;
+
+                case "Credit":
+                    CreditContent.Visibility = Visibility.Visible;
+                    CreditTab.BorderBrush = _activeBrush;
+                    CreditTabText.Foreground = _activeBrush;
+                    break;
+
+                case "Additional":
+                    AdditionalContent.Visibility = Visibility.Visible;
+                    AdditionalTab.BorderBrush = _activeBrush;
+                    AdditionalTabText.Foreground = _activeBrush;
+                    break;
+            }
+        }
+
+        private void AddFirstParty_Click(object sender, RoutedEventArgs e)
+        {
+            // Add dummy party for testing
             Parties.Add(new Party
             {
-                Name = "New Party",
-                Phone = "9000000000",
-                Balance = "₹0",
-                Status = "Active",
-                StatusColor = new SolidColorBrush(Colors.Green),
-                Type = "Customer",
-                Outstanding = "₹0",
-                TotalSales = "₹0",
-                BalanceColor = new SolidColorBrush(Colors.Green)
+                Name = "naveen",
+                Balance = "₹0.00"
             });
 
-            CloseAddParty_Click(sender, e);
-            UpdatePageState();
-        }
-
-        // ================= EDIT / DELETE =================
-        private void EditParty_Click(object sender, RoutedEventArgs e)
-        {
-            OpenCustomerPopup_Click(sender, e);
-        }
-
-        private void DeleteParty_Click(object sender, RoutedEventArgs e)
-        {
-            if (Parties.Count > 0)
-                Parties.RemoveAt(0);
-
-            UpdatePageState();
+            UpdateUI();
         }
     }
 }
